@@ -10,7 +10,9 @@ node_modules/
 .idea/
 coverage
 
+es
 lib
+dist
 
 /lib/configs/stories.js
 
