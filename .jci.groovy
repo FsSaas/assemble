@@ -6,10 +6,6 @@ wrap([ $class: 'TimestamperBuildWrapper' ]) {
     shortCommit = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%h'").trim()
   }
 
-  stage ('recording') {
-    sh "curl -H \"Content-Type:application/json\" -X PUT --data '{ \"name\": \"${pckJson.name}\", \"version\": \"${pckJson.version}\", \"ci-name\": \"http://jci.onelaas.com\", \"ci-job-name\": \"${JOB_NAME}\", \"ci-job-number\": ${BUILD_NUMBER} }' http://182.92.157.77:7001/api/v3/ci/builds"
-  }
-
   stage ('npm install') {
     sh 'npm cache verify'
     sh 'npm install'
@@ -30,14 +26,6 @@ wrap([ $class: 'TimestamperBuildWrapper' ]) {
     'build stroybook': {
       stage ('build stroybook') {
         sh 'npm run build-storybook'
-      }
-    }
-  )
-
-  parallel (
-    'center': {
-      stage ('center') {
-        sh "curl -H \"Content-Type:application/json\" -X PUT --data '{ \"assets\": \"/${safeCmpName}/release/dist/main-${pckJson.version}\.min\.js\", \"example-path\": \"/${safeCmpName}/${pckJson.version}/iframe\.html?viewMode=story&id=example-\", \"gitssh\": \"${params.gitcloneurl}\", \"commit-id\": \"${shortCommit}\", }' http://182.92.157.77:7001/api/v3/management/ci/components"
       }
     }
   )
