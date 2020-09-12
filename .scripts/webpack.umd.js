@@ -6,7 +6,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
-const { name } = require('../package.json');
+const { name, version } = require('../package.json');
 
 // 多线程加速构建
 let workers = Math.floor(require('os').cpus().length * 0.7);
@@ -29,15 +29,13 @@ module.exports = {
   'entry': {
     [name]: ['./src/index.js']
   },
-
   'output': {
     'library': name,
     'libraryTarget': 'umd',
     'umdNamedDefine': true,
     'path': path.join(process.cwd(), 'dist'),
-    'filename': '[name].min.js'
+    'filename': `main-${version}.min.js`
   },
-
   'externals': {
     'react': 'React',
     'react-dom': 'ReactDOM'
