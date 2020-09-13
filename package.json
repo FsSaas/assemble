@@ -1,7 +1,7 @@
 {
   "name": "@lvm/component-template",
   "version": "1.1.2",
-  "description": "",
+  "description": " ",
   "main": "lib/index.js",
   "scripts": {
     "storybook": "start-storybook -p 6006",
