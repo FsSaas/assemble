@@ -1,4 +1,7 @@
 
+let components = [];
+let loadPromises
+
 export default components => {
   const loadPromises = components.map(it => {
     let { name, 'source': { type, uri, path } } = it;
@@ -20,5 +23,13 @@ export default components => {
       });
     }
   });
-  return Promise.all(loadPromises);
+  loadPromises = Promise.all(loadPromises)
+    .then(cmps => components = cmps);
+  return loadPromises;
+}
+
+export const getComponent = name => {
+  loadPromises.then(cmps => {
+    debugger
+  })
 }

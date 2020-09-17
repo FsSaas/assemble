@@ -65,11 +65,11 @@
   ],
   "components": [
     {
-      "name": "test-shell-1",
+      "name": "app-layout",
       "source": {
         "type": "uri",
-        "uri": "https://onepaas.oss-cn-beijing.aliyuncs.com/ux/lnm-test-shell-1/1.0.2/dist/main-1.0.2.min.js",
-        "path": "@lnm/test-shell-1"
+        "uri": "https://onepaas.oss-cn-beijing.aliyuncs.com/ux/lnm-app-layout/1.0.1/dist/main-1.0.1.min.js",
+        "path": "@lnm/app-layout"
       }
     },
     {
@@ -91,7 +91,7 @@
     {
       "name": "login",
       "path": "/login",
-      "layout": "layout-app",
+      "layout": "app-layout",
       "components": [
         {
           "name": "datatable",
@@ -105,7 +105,7 @@
     {
       "name": "ets",
       "path": "/entries",
-      "layout": "layout-app",
+      "layout": "app-layout",
       "components": [
         {
           "name": "nav",
@@ -138,7 +138,7 @@
       "query": [
         "id"
       ],
-      "layout": "layout-app"
+      "layout": "app-layout"
     }
   ]
 }

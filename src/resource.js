@@ -1,15 +1,6 @@
 import fetch from 'node-fetch';
 
-export default resources => {
-  let res = {};
-  for (let i = 0; i < resources.length; i++) {
-    let it = resources[i];
-    res[it.name] = new Resource(it);
-  }
-  return res;
-}
-
-class Resource {
+export default class Resource {
   constructor(opts) {
     let { uri = '', value, type = 'restful' } = opts;
     this.uri = uri;
