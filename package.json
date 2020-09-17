@@ -10,7 +10,8 @@
     "build:es": "babel src -d es --ignore **/__tests__",
     "build:lib": "cross-env OUTPUT_MODULE=commonjs babel src -d lib --ignore **/__tests__",
     "build:umd": "webpack --config ./.scripts/webpack.umd.js",
-    "build": "npm run build:lib && npm run build:es && npm run build:umd"
+    "build": "npm run build:lib && npm run build:es && npm run build:umd",
+    "json": "echo $(node test/ymljs.js) > src/app.json"
   },
   "keywords": [],
   "author": "",

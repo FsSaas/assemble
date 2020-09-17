@@ -7,21 +7,25 @@ resources:
   - name: signin
     type: restful
     uri: "http://127.0.0.1:8080/users/signin"
-  - name: menu
-    type: static
-    value:
-      - name: a
-        label: A
   - name: nav
     type: static
     value:
-      - label: 基础服务
-        key: infras
-        link: /infras-preview
-      - label: 项目
-        key: project
-        link: /projects
-
+      - key: 基础服务
+        label: infras
+        path: /base
+      - key: 管理
+        label: mange
+        path: /mange
+  - name: menu
+    type: static
+    value:
+      - key: 基础服务
+        label: infras
+        path: /base
+      - key: 管理
+        label: mange
+        path: /mange
+     
 authorization:
   type: cookie
   key: access
@@ -35,16 +39,11 @@ externals:
     uri: https://cdnjs.cloudflare.com/ajax/libs/antd/4.6.4/antd.min.css
 
 components:
-  - name: 'app-layout'
+  - name: nav-layout
     source: 
       type: uri
-      uri: https://onepaas.oss-cn-beijing.aliyuncs.com/ux/lnm-app-layout/1.0.2/dist/main-1.0.2.min.js
-      path: '@lnm/app-layout'
-  - name: left-nav
-    source: 
-      type: uri
-      uri: https://onepaas.oss-cn-beijing.aliyuncs.com/ux/lnm-left-nav/1.0.1/dist/main-1.0.1.min.js
-      path: '@lnm/left-nav'
+      uri: https://onepaas.oss-cn-beijing.aliyuncs.com/ux/lnm-nav-layout/1.0.0/dist/main-1.0.0.min.js
+      path: '@lnm/nav-layout'
   - name: 'datatable'
     source: 
       type: local
@@ -61,32 +60,23 @@ components:
 pages:
   - name: login
     path: /
-    layout: app-layout
+    layout:
+      name: nav-layout
+      statics:
+        logoSrc: https://circleci.com/docs/assets/img/logos/logo-wordmark.svg
+      resources:
+        - nav
+        - leftMenu: menu
     components:
       - name: datatable
         slot: content
-        resources:
-          - signin
 
   - name: ets
     path: /entries
-    layout: app-layout
+    layout: nav-layout
+    resources:
+      - datasources: entries
     components:
-      - name: nav
-        slot: nav
-        resources: 
-          - nav
-      - name: menu
-        slot: menu
-        resources: 
-          - menu
       - name: datatable
         slot: content
-        resources:
-          - datasources: entries
-
-  - name: ets-detail
-    path: /entries-detail
-    query:
-      - id
-    layout: app-layout
+       

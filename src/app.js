@@ -11,19 +11,19 @@ export default props => {
 
   const core = new Core();
   let resources = core.initResources();
-  let [render, setRender] = useState(false);
+  let [init, setInit] = useState(false);
 
   useEffect(() => {
     const makeRequest = async () => {
       await core.loadExternals();
       await core.loadComponents();
-      setRender(true);
+      setInit(true);
     }
     makeRequest();
   }, []);
 
   return <>
-    { render ? <Router>
+    { init ? <Router>
       <Switch>
         {core.pages.map(page => <Route exact key={page.name} path={page.path}>
           <Page
