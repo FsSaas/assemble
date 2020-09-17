@@ -40,6 +40,10 @@ module.exports = {
     'enforceExtension': false,
     'extensions': ['.js', '.jsx', '.json', '.less', '.css']
   },
+  'externals': {
+    'react': 'React',
+    'react-dom': 'ReactDOM'
+  },
   'module': {
     'rules': [
       {

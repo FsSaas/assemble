@@ -1,20 +1,16 @@
 import React from 'react';
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-} from 'react-router-dom';
 import Resource from './resource';
-import Page from './page';
-
 import appJson from './app.json';
 
 const store = {}
 
 export const getComponent = name => {
   let [cmp] = store.components.filter(it => it.name == name);
-  debugger
-  return cmp;
+  let CmpClass = cmp.class;
+  if (typeof CmpClass !== 'function' && !!CmpClass.default) {
+    CmpClass = CmpClass.default
+  }
+  return CmpClass;
 }
 
 export default class Core {
@@ -28,18 +24,6 @@ export default class Core {
     this.pages = meta.pages;
   }
 
-  initRouters() {
-    return <>
-      <Router>
-        <Switch>
-          {this.pages.map(page => <Route path={page.path}>
-            <Page layout={page.layout} components={page.components} />
-          </Route>)}
-        </Switch>
-      </Router>
-    </>
-  }
-
   loadComponents() {
     return this._loadComponents()
       .then(cmps => {
@@ -48,11 +32,24 @@ export default class Core {
       });
   }
   loadExternals() {
-    this._loadExternals()
+    return this._loadExternals()
       .then(externals => {
         store.externals = externals;
         return externals;
       });
+  }
+
+  _getValueFormPath(path) {
+    try {
+      let data = this.global;
+      let paths = path.split('.');
+      for (let i = 0; i < paths.length; i++) {
+        data = data[paths[i]];
+      }
+      return data;
+    } catch (e) {
+      throw new Error('未找到组件 ' + path);
+    }
   }
 
   _loadComponents() {
@@ -64,6 +61,7 @@ export default class Core {
             const script = document.createElement('script');
             script.src = uri;
             script.async = false;
+            script.crossOrigin = "anonymous";
             document.body.appendChild(script);
             script.onload = () => {
               resolve({
@@ -73,7 +71,7 @@ export default class Core {
           })
         } else if (type == 'local') {
           return Promise.resolve({
-            name, 'class': this.global[path]
+            name, 'class': this._getValueFormPath(path)
           });
         }
       })
@@ -91,6 +89,7 @@ export default class Core {
             tag = document.createElement('script');
             tag.src = uri;
             tag.async = false;
+            tag.crossOrigin = "anonymous";
           } else if (type == 'style') {
             tag = document.createElement('link');
             tag.rel = 'stylesheet';
