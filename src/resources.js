@@ -1,7 +1,15 @@
 import fetch from 'node-fetch';
 
-class Resource {
+export default resources => {
+  let res = {};
+  for (let i = 0; i < resources.length; i++) {
+    let it = resources[i];
+    res[it.name] = new Resource(it);
+  }
+  return res;
+}
 
+class Resource {
   constructor(opts) {
     let { uri = '', value, type = 'restful' } = opts;
     this.uri = uri;
@@ -11,16 +19,12 @@ class Resource {
       'content-type': 'application/json'
     };
     this.raw = opts;
-    this.response;
-    this.error;
+    this.response = null;
+    this.error = null;
     if (!uri) this.type = 'static';
   }
 
-  getValue() {
-    return value;
-  }
-
-  fetch(uri, opts) {
+  fetch(uri, opts = {}) {
     if (!opts.headers) opts.headers = {}
     opts.headers['content-type'] = 'application/json';
     opts.headers['method'] = opts.headers['method'] || 'GET';
@@ -34,7 +38,11 @@ class Resource {
   }
 
   getAll() {
-    return this.fetch(this.uri);
+    if (this.type == 'restful') {
+      return this.fetch(this.uri);
+    } else {
+      return this.value;
+    }
   }
   getById(id) {
     return this.fetch(`${this.uri}?id=${id}`);
@@ -60,10 +68,3 @@ class Resource {
   }
 }
 
-export default meta => {
-  for (let resource of Object.entries(meta)) {
-    let [name, value] = resource;
-    meta[name] = new Resource(value);
-  }
-  return meta;
-}

@@ -1,38 +1,44 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import appJson from '../app.json';
 
 import resources from './resources';
+import authorization from './authorization';
+import components from './components';
+import externals from './externals';
+import routers from './routers';
+import appJson from './app.json';
 
-export const Assemble = ({ primary, backgroundColor, size, label, ...props }) => {
-  const mode = primary ? 'storybook-button--primary' : 'storybook-button--secondary';
+export const Assemble = props => {
 
-  let { 'resources': res, authorization, components, pages } = appJson;
-  resources(res);
+  let [app, setApp] = useState();
 
-  return (
-    <button
-      type="button"
-      className={['storybook-button', `storybook-button--${size}`, mode].join(' ')}
-      style={backgroundColor && { backgroundColor }}
-      {...props}
-    >
-      {label}
-    </button>
-  );
-};
+  useEffect(() => {
+    const makeRequest = async () => {
+      let {
+        'resources': res,
+        'authorization': auth,
+        'externals': exts,
+        'components': cmps,
+        pages
+      } = appJson;
 
-Assemble.propTypes = {
-  primary: PropTypes.bool,
-  backgroundColor: PropTypes.string,
-  size: PropTypes.oneOf(['small', 'medium', 'large']),
-  label: PropTypes.string.isRequired,
-  onClick: PropTypes.func,
-};
+      const instanceYml = {
+        'externals': await externals(exts),
+        'components': await components(cmps),
+        'resources': resources(res),
+      }
 
-Assemble.defaultProps = {
-  backgroundColor: null,
-  primary: false,
-  size: 'medium',
-  onClick: undefined,
+      let a = routers(pages);
+      debugger
+      setApp(a);
+
+      console.log(instanceYml);
+      console.log(instanceYml.resources.menu.getAll())
+    }
+    makeRequest();
+  }, []);
+
+  return <>
+    { app }
+  </>
 };

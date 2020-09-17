@@ -1,0 +1,144 @@
+{
+  "version": "1.0.0",
+  "resources": [
+    {
+      "name": "builds",
+      "type": "restful",
+      "uri": "http://182.92.157.77:7003/api/v1/builds"
+    },
+    {
+      "name": "signin",
+      "type": "restful",
+      "uri": "http://127.0.0.1:8080/users/signin"
+    },
+    {
+      "name": "menu",
+      "type": "static",
+      "value": [
+        {
+          "name": "a",
+          "label": "A"
+        }
+      ]
+    },
+    {
+      "name": "nav",
+      "type": "static",
+      "value": [
+        {
+          "label": "基础服务",
+          "key": "infras",
+          "link": "/infras-preview"
+        },
+        {
+          "label": "项目",
+          "key": "project",
+          "link": "/projects"
+        }
+      ]
+    }
+  ],
+  "authorization": {
+    "type": "cookie",
+    "key": "access",
+    "unlogin": {
+      "redirect": "/login"
+    }
+  },
+  "externals": [
+    {
+      "type": "script",
+      "uri": "https://unpkg.com/react@16/umd/react.development.js"
+    },
+    {
+      "type": "script",
+      "uri": "https://unpkg.com/react-dom@16/umd/react-dom.development.js"
+    },
+    {
+      "type": "script",
+      "uri": "https://cdnjs.cloudflare.com/ajax/libs/antd/4.6.4/antd.min.js"
+    },
+    {
+      "type": "style",
+      "uri": "https://cdnjs.cloudflare.com/ajax/libs/antd/4.6.4/antd.min.css"
+    }
+  ],
+  "components": [
+    {
+      "name": "test-shell-1",
+      "source": {
+        "type": "uri",
+        "uri": "https://onepaas.oss-cn-beijing.aliyuncs.com/ux/lnm-test-shell-1/1.0.2/dist/main-1.0.2.min.js",
+        "path": "@lnm/test-shell-1"
+      }
+    },
+    {
+      "name": "datatable",
+      "source": {
+        "type": "local",
+        "path": "antd.Table"
+      }
+    },
+    {
+      "name": "nav",
+      "source": {
+        "type": "local",
+        "path": "antd.Menu"
+      }
+    }
+  ],
+  "pages": [
+    {
+      "name": "login",
+      "path": "/login",
+      "layout": "layout-app",
+      "components": [
+        {
+          "name": "datatable",
+          "slot": "content",
+          "resources": [
+            "signin"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "ets",
+      "path": "/entries",
+      "layout": "layout-app",
+      "components": [
+        {
+          "name": "nav",
+          "slot": "nav",
+          "resources": [
+            "nav"
+          ]
+        },
+        {
+          "name": "menu",
+          "slot": "menu",
+          "resources": [
+            "menu"
+          ]
+        },
+        {
+          "name": "datatable",
+          "slot": "content",
+          "resources": [
+            {
+              "datasources": "entries"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "ets-detail",
+      "path": "/entries-detail",
+      "query": [
+        "id"
+      ],
+      "layout": "layout-app"
+    }
+  ]
+}

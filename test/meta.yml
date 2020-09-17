@@ -1,23 +1,25 @@
 version: 1.0.0
 
 resources:
-  entries:
+  - name: builds
     type: restful
-    load: immediate
-    uri: "http://127.0.0.1:8080/solutions"
-  menu:
+    uri: "http://182.92.157.77:7003/api/v1/builds"
+  - name: signin
+    type: restful
+    uri: "http://127.0.0.1:8080/users/signin"
+  - name: menu
     type: static
     value:
       - name: a
         label: A
-      - name: b
-        label: B
-  nav:
+  - name: nav
     type: static
     value:
       - label: 基础服务
+        key: infras
         link: /infras-preview
       - label: 项目
+        key: project
         link: /projects
 
 authorization:
@@ -26,38 +28,63 @@ authorization:
   unlogin:
     redirect: /login
 
+externals:
+  - type: script
+    uri: https://unpkg.com/react@16/umd/react.development.js
+  - type: script
+    uri: https://unpkg.com/react-dom@16/umd/react-dom.development.js
+  - type: script
+    uri: https://cdnjs.cloudflare.com/ajax/libs/antd/4.6.4/antd.min.js
+  - type: css
+    uri: https://cdnjs.cloudflare.com/ajax/libs/antd/4.6.4/antd.min.css
+
 components:
-  - name: '@lnm/table'
-    version: 1.0.2
-    load: lazy
-    source: https://onepaas.oss-cn-beijing.aliyuncs.com/ux/lnm-test-shell-1/1.0.2/dist/main-1.0.2.min.js
-  - name: '@lnm/button'
-    version: 1.0.2
-    source: https://onepaas.oss-cn-beijing.aliyuncs.com/ux/lnm-button/1.0.0/dist/main-1.0.0.min.js
-  - name: '@lnm/nav'
-    version: 1.0.4
-    source: https://onepaas.oss-cn-beijing.aliyuncs.com/ux/lnm-button/1.0.0/dist/main-1.0.0.min.js
+  - name: 'test-shell-1'
+    source: 
+      type: uri
+      uri: https://onepaas.oss-cn-beijing.aliyuncs.com/ux/lnm-test-shell-1/1.0.2/dist/main-1.0.2.min.js
+      path: '@lnm/test-shell-1'
+  - name: 'app-layout'
+    source: 
+      type: uri
+      uri: https://onepaas.oss-cn-beijing.aliyuncs.com/ux/lnm-app-layout/1.0.0/dist/main-1.0.0.min.js
+      path: '@lnm/app-layout'
+  - name: 'datatable'
+    source: 
+      type: local
+      path: antd.Table
+  - name: 'nav'
+    source: 
+      type: local
+      path: antd.Menu
 
 pages:
-  login:
+  - name: login
     path: /login
-    layout: '@lnm/layout-app'
-  entries:
+    layout: layout-app
+    components:
+      - name: datatable
+        slot: content
+        resources:
+          - signin
+  - name: ets
     path: /entries
-    layout:
-      name: '@lnm/layout-app'
-      children:
-        - name: '@lnm/nav'
-          slot: nav
-          datasource: ${datasource.nav}
-        - name: '@lnm/menu'
-          slot: menu
-          datasource: ${datasource.menu}
-          props:
-            theme: dark
-        - name: '@lnm/table'
-          slot: content
-          datasource: ${datasouce.entries}
-  keywords:
-    path: /entries
-    layout: '@lnm/layout-app'
+    layout: layout-app
+    components:
+      - name: nav
+        slot: nav
+        resources: 
+          - nav
+      - name: menu
+        slot: menu
+        resources: 
+          - menu
+      - name: datatable
+        slot: content
+        resources:
+          - datasources: entries
+  - name: ets-detail
+    path: /entries-detail
+    query:
+      - id
+    layout: layout-app

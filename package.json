@@ -55,6 +55,7 @@
   },
   "dependencies": {
     "js-yaml": "^3.14.0",
-    "node-fetch": "^2.6.1"
+    "node-fetch": "^2.6.1",
+    "react-router-dom": "^5.2.0"
   }
 }
