@@ -30,10 +30,6 @@ authorization:
 
 externals:
   - type: script
-    uri: https://unpkg.com/react@16/umd/react.development.js
-  - type: script
-    uri: https://unpkg.com/react-dom@16/umd/react-dom.development.js
-  - type: script
     uri: https://cdnjs.cloudflare.com/ajax/libs/antd/4.6.4/antd.min.js
   - type: style
     uri: https://cdnjs.cloudflare.com/ajax/libs/antd/4.6.4/antd.min.css
@@ -42,8 +38,13 @@ components:
   - name: 'app-layout'
     source: 
       type: uri
-      uri: https://onepaas.oss-cn-beijing.aliyuncs.com/ux/lnm-app-layout/1.0.1/dist/main-1.0.1.min.js
+      uri: https://onepaas.oss-cn-beijing.aliyuncs.com/ux/lnm-app-layout/1.0.2/dist/main-1.0.2.min.js
       path: '@lnm/app-layout'
+  - name: left-nav
+    source: 
+      type: uri
+      uri: https://onepaas.oss-cn-beijing.aliyuncs.com/ux/lnm-left-nav/1.0.1/dist/main-1.0.1.min.js
+      path: '@lnm/left-nav'
   - name: 'datatable'
     source: 
       type: local
@@ -52,16 +53,21 @@ components:
     source: 
       type: local
       path: antd.Menu
+  - name: 'menu'
+    source: 
+      type: local
+      path: antd.Menu
 
 pages:
   - name: login
-    path: /login
+    path: /
     layout: app-layout
     components:
       - name: datatable
         slot: content
         resources:
           - signin
+
   - name: ets
     path: /entries
     layout: app-layout
@@ -78,6 +84,7 @@ pages:
         slot: content
         resources:
           - datasources: entries
+
   - name: ets-detail
     path: /entries-detail
     query:

@@ -48,11 +48,11 @@
   "externals": [
     {
       "type": "script",
-      "uri": "http://lib.baomitu.com/antd/4.4.2/antd-with-locales.js"
+      "uri": "https://cdnjs.cloudflare.com/ajax/libs/antd/4.6.4/antd.min.js"
     },
     {
       "type": "style",
-      "uri": "http://lib.baomitu.com/antd/4.4.2/antd.compact.css"
+      "uri": "https://cdnjs.cloudflare.com/ajax/libs/antd/4.6.4/antd.min.css"
     }
   ],
   "components": [
@@ -60,8 +60,16 @@
       "name": "app-layout",
       "source": {
         "type": "uri",
-        "uri": "http://onepaas.oss-cn-beijing.aliyuncs.com/ux/lnm-app-layout/1.0.2/dist/main-1.0.2.min.js",
+        "uri": "https://onepaas.oss-cn-beijing.aliyuncs.com/ux/lnm-app-layout/1.0.2/dist/main-1.0.2.min.js",
         "path": "@lnm/app-layout"
+      }
+    },
+    {
+      "name": "left-nav",
+      "source": {
+        "type": "uri",
+        "uri": "https://onepaas.oss-cn-beijing.aliyuncs.com/ux/lnm-left-nav/1.0.1/dist/main-1.0.1.min.js",
+        "path": "@lnm/left-nav"
       }
     },
     {
@@ -73,6 +81,13 @@
     },
     {
       "name": "nav",
+      "source": {
+        "type": "local",
+        "path": "antd.Menu"
+      }
+    },
+    {
+      "name": "menu",
       "source": {
         "type": "local",
         "path": "antd.Menu"
@@ -130,16 +145,7 @@
       "query": [
         "id"
       ],
-      "layout": "app-layout",
-      "components": [
-        {
-          "name": "nav",
-          "slot": "nav",
-          "resources": [
-            "nav"
-          ]
-        }
-      ]
+      "layout": "app-layout"
     }
   ]
 }

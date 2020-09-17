@@ -1,29 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import {
-  BrowserRouter as Router,
+  HashRouter as Router,
   Switch,
   Route,
 } from 'react-router-dom';
 import Page from './components/page';
-import Core from './core';
+import Core from './common/core';
 
 export default props => {
 
-  let [render, setRender] = useState(false);
-  let [externals, setExternals] = useState();
-  let [components, setComponents] = useState();
-  let [resources, setResources] = useState();
-
   const core = new Core();
+  let resources = core.initResources();
+  let [render, setRender] = useState(false);
 
   useEffect(() => {
     const makeRequest = async () => {
-      let exts = await core.loadExternals();
-      let cmps = await core.loadComponents();
-      let res = core.initResources();
-      setExternals(exts);
-      setComponents(cmps);
-      setResources(res);
+      await core.loadExternals();
+      await core.loadComponents();
       setRender(true);
     }
     makeRequest();
@@ -32,8 +25,12 @@ export default props => {
   return <>
     { render ? <Router>
       <Switch>
-        {core.pages.map(page => <Route key={page.name} path={page.path}>
-          <Page layout={page.layout} components={page.components} />
+        {core.pages.map(page => <Route exact key={page.name} path={page.path}>
+          <Page
+            layout={page.layout}
+            components={page.components}
+            resources={resources}
+          />
         </Route>)}
       </Switch>
     </Router> : null}

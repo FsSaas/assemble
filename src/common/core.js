@@ -1,11 +1,17 @@
 import React from 'react';
 import Resource from './resource';
-import appJson from './app.json';
+import appJson from '../app.json';
 
 const store = {}
 
+/**
+ * 获取组件对象
+ */
 export const getComponent = name => {
   let [cmp] = store.components.filter(it => it.name == name);
+  if (!cmp) {
+    throw new Error('未找到组件: ' + name);
+  }
   let CmpClass = cmp.class;
   if (typeof CmpClass !== 'function' && !!CmpClass.default) {
     CmpClass = CmpClass.default
@@ -61,7 +67,7 @@ export default class Core {
             const script = document.createElement('script');
             script.src = uri;
             script.async = false;
-            script.crossOrigin = "anonymous";
+            // script.crossOrigin = "anonymous";
             document.body.appendChild(script);
             script.onload = () => {
               resolve({
@@ -89,7 +95,7 @@ export default class Core {
             tag = document.createElement('script');
             tag.src = uri;
             tag.async = false;
-            tag.crossOrigin = "anonymous";
+            // tag.crossOrigin = "anonymous";
           } else if (type == 'style') {
             tag = document.createElement('link');
             tag.rel = 'stylesheet';
