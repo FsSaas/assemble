@@ -54,6 +54,7 @@
     "webpack-cli": "^3.3.12"
   },
   "dependencies": {
+    "js-yaml": "^3.14.0",
     "node-fetch": "^2.6.1"
   }
 }

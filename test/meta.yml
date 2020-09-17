@@ -1,0 +1,63 @@
+version: 1.0.0
+
+resources:
+  entries:
+    type: restful
+    load: immediate
+    uri: "http://127.0.0.1:8080/solutions"
+  menu:
+    type: static
+    value:
+      - name: a
+        label: A
+      - name: b
+        label: B
+  nav:
+    type: static
+    value:
+      - label: 基础服务
+        link: /infras-preview
+      - label: 项目
+        link: /projects
+
+authorization:
+  type: cookie
+  key: access
+  unlogin:
+    redirect: /login
+
+components:
+  - name: '@lnm/table'
+    version: 1.0.2
+    load: lazy
+    source: https://onepaas.oss-cn-beijing.aliyuncs.com/ux/lnm-test-shell-1/1.0.2/dist/main-1.0.2.min.js
+  - name: '@lnm/button'
+    version: 1.0.2
+    source: https://onepaas.oss-cn-beijing.aliyuncs.com/ux/lnm-button/1.0.0/dist/main-1.0.0.min.js
+  - name: '@lnm/nav'
+    version: 1.0.4
+    source: https://onepaas.oss-cn-beijing.aliyuncs.com/ux/lnm-button/1.0.0/dist/main-1.0.0.min.js
+
+pages:
+  login:
+    path: /login
+    layout: '@lnm/layout-app'
+  entries:
+    path: /entries
+    layout:
+      name: '@lnm/layout-app'
+      children:
+        - name: '@lnm/nav'
+          slot: nav
+          datasource: ${datasource.nav}
+        - name: '@lnm/menu'
+          slot: menu
+          datasource: ${datasource.menu}
+          props:
+            theme: dark
+        - name: '@lnm/table'
+          slot: content
+          datasource: ${datasouce.entries}
+  keywords:
+    path: /entries
+    layout: '@lnm/layout-app'
