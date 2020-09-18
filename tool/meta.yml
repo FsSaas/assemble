@@ -36,7 +36,7 @@ resources:
         path: /mange
 
 authorization:
-  type: cookie
+  type: jwt
   key: access
   unlogin:
     redirect: login
