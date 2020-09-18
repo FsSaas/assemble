@@ -1,6 +1,12 @@
 version: 1.0.0
 
 resources:
+  - name: fomr-detail-fields
+    type: restful
+    uri: http://39.105.230.7/mock/5f642d3ba107ca0020321882/example/form-detail-fields
+  - name: form-detail
+    type: restful
+    uri: http://39.105.230.7/mock/5f642d3ba107ca0020321882/example/form-detail
   - name: table-data
     type: restful
     uri: http://39.105.230.7/mock/5f642d3ba107ca0020321882/example/table
@@ -50,7 +56,7 @@ components:
   - name: login
     source: 
       type: uri
-      uri: //onepaas.oss-cn-beijing.aliyuncs.com/ux/lnm-login/1.0.0/dist/main-1.0.0.min.js
+      uri: //onepaas.oss-cn-beijing.aliyuncs.com/ux/lnm-login/1.0.1/dist/main-1.0.1.min.js
       path: '@lnm/login'
   - name: 'datatable'
     source: 
@@ -82,6 +88,8 @@ pages:
         resources:
           - dataSource: table-data
           - columns: table-columns
+        links:
+          - detail: one-detail
 
   - name: login
     path: /
@@ -92,4 +100,21 @@ pages:
           - form
         links:
           - home
+  
+  - name: one-detail
+    path: /detail-form
+    query:
+      - id
+    layout:
+      name: nav-layout
+      statics:
+        logoSrc: https://circleci.com/docs/assets/img/logos/logo-wordmark.svg
+    components:
+      - name: form
+        slot: content
+        resources:
+          - data: form-detail
+          - fields: fomr-detail-fields
+        links:
+          - back: home
        

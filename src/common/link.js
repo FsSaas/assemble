@@ -12,8 +12,8 @@ export default class Link {
   }
 
   goto(ars = {}) {
-    let query = qs.stringify(ars)
-    let { name, path } = getPage(this.name);
-    history.push(`${path}?${query}`);
+    let search = qs.stringify(ars)
+    let { path } = getPage(this.name);
+    history.push(`${path}/${search}`);
   }
 }

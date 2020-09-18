@@ -2,6 +2,11 @@ import React from 'react';
 import { getComponent } from '../common/core';
 import Link from '../common/link';
 
+/**
+ * 组装Reources对象，提供组件可调用
+ * @param {*} resources 
+ * @param {*} resourcesObjs 
+ */
 const packResouces = (resources = [], resourcesObjs = {}) => {
   let reous = {};
   for (let i = 0; i < resources.length; i++) {
@@ -16,6 +21,10 @@ const packResouces = (resources = [], resourcesObjs = {}) => {
   return reous;
 }
 
+/**
+ * 
+ * @param {*} links 
+ */
 const packLinks = links => {
   let linkInstances = [];
   for (let i=0; i<links.length; i++) {

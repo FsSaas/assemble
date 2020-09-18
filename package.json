@@ -41,10 +41,10 @@
   },
   "dependencies": {
     "antd": "^4.6.4",
-    "history": "^5.0.0",
+    "history": "^4.10.1",
     "js-yaml": "^3.14.0",
     "node-fetch": "^2.6.1",
     "querystring": "^0.2.0",
-    "react-router-dom": "^5.2.0"
+    "react-router-dom": "^4.3.1"
   }
 }
