@@ -4,6 +4,7 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const ProgressBarPlugin = require('progress-bar-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
 const { name, version } = require('../package.json');
@@ -127,6 +128,11 @@ module.exports = {
     'noEmitOnErrors': true,
   },
   'plugins': [
+    new HtmlWebpackPlugin({
+      'hash': true,
+      'template': `.scripts/index.html`,
+      'filename': 'index.html'
+    }),
     new ProgressBarPlugin(),
     new MiniCssExtractPlugin({
       'filename': '[name].min.css'
