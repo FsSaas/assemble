@@ -6,6 +6,7 @@ import {
 } from 'react-router-dom';
 import Page from './components/page';
 import Core from './common/core';
+import history from './history';
 
 export default props => {
 
@@ -24,7 +25,7 @@ export default props => {
   }, []);
 
   return <>
-    { init ? <Router>
+    { init ? <Router history={history}>
       <Switch>
         {core.pages.map(page => <Route exact key={page.name} path={page.path}>
           <Page

@@ -7,6 +7,9 @@ resources:
   - name: table-columns
     type: restful
     uri: http://39.105.230.7/mock/5f642d3ba107ca0020321882/example/table-columns
+  - name: form
+    type: restful
+    uri: http://39.105.230.7/mock/5f642d3ba107ca0020321882/example/form
   - name: nav
     type: static
     value:
@@ -44,6 +47,11 @@ components:
       type: uri
       uri: //onepaas.oss-cn-beijing.aliyuncs.com/ux/lnm-nav-layout/1.0.0/dist/main-1.0.0.min.js
       path: '@lnm/nav-layout'
+  - name: login
+    source: 
+      type: uri
+      uri: //onepaas.oss-cn-beijing.aliyuncs.com/ux/lnm-login/1.0.0/dist/main-1.0.0.min.js
+      path: '@lnm/login'
   - name: 'datatable'
     source: 
       type: uri
@@ -60,7 +68,7 @@ components:
 
 pages:
   - name: home
-    path: /
+    path: /home
     layout:
       name: nav-layout
       statics:
@@ -75,12 +83,13 @@ pages:
           - dataSource: table-data
           - columns: table-columns
 
-  - name: ets
-    path: /login
-    layout: nav-layout
-    resources:
-      - datasources: entries
+  - name: login
+    path: /
     components:
-      - name: datatable
+      - name: login
         slot: content
+        resources:
+          - form
+        links:
+          - home
        
