@@ -16,6 +16,9 @@ resources:
   - name: form
     type: restful
     uri: http://39.105.230.7/mock/5f642d3ba107ca0020321882/example/form
+  - name: detail-id
+    type: query
+    key: id 
   - name: nav
     type: static
     value:
@@ -103,18 +106,19 @@ pages:
   
   - name: one-detail
     path: /detail-form
-    query:
-      - id
     layout:
       name: nav-layout
       statics:
         logoSrc: https://circleci.com/docs/assets/img/logos/logo-wordmark.svg
+    query:
+      - id 
     components:
       - name: form
         slot: content
         resources:
           - data: form-detail
           - fields: fomr-detail-fields
+          - id: detail-id
         links:
           - back: home
        

@@ -34,11 +34,13 @@ export default class App extends React.Component {
       { init ? <Router history={history}>
         <Switch>
           {pages.map(it => {
+            let { layout, components, query, } = it;
             return <Route exact key={it.name} path={it.path}>
               <Page
-                layout={it.layout}
-                components={it.components}
+                layout={layout}
+                components={components}
                 resources={this.resources}
+                query={query}
               />
             </Route>
           })}
