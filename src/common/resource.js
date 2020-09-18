@@ -57,5 +57,8 @@ export default class Resource {
       'body': JSON.stringify(data)
     });
   }
+  post(data) {
+    return this.newOne(data);
+  }
 }
 
