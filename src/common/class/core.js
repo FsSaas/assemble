@@ -1,53 +1,8 @@
+
 import React from 'react';
 import Resource from './resource';
-
-const store = {}
-
-const createScript = (uri, callback) => {
-  let head = document.getElementsByTagName('head')[0];
-  const script = document.createElement('script');
-  script.src = uri;
-  script.async = false;
-  // script.crossOrigin = "anonymous";
-  script.onload = () => { callback() };
-  head.appendChild(script);
-}
-
-const createLink = uri => {
-  let head = document.getElementsByTagName('head')[0];
-  let link = document.createElement('link');
-  link.rel = 'stylesheet';
-  link.type = 'text/css';
-  link.href = uri;
-  link.media = 'all';
-  // link.crossOrigin = "anonymous";
-  head.appendChild(link);
-}
-
-export const getPage = name => {
-  let [page] = store.pages.filter(it => it.name == name);
-  if (!page) {
-    throw new Error('未找到页面: ' + page);
-  }
-  let { components, layout, ...rest } = page;
-  return rest;
-}
-
-/**
- * 获取组件对象
- */
-export const getComponent = name => {
-  let [cmp] = store.components.filter(it => it.name == name);
-  if (!cmp) {
-    throw new Error('未找到组件: ' + name);
-  }
-  // UMD 加载的组件，组件在 default 属性内
-  let CmpClass = cmp.class;
-  if (typeof CmpClass !== 'function' && !!CmpClass.default) {
-    CmpClass = CmpClass.default
-  }
-  return CmpClass;
-}
+import createScript from '../utils/create-script';
+import createLink from '../utils/create-link';
 
 export default class Core {
 
@@ -57,13 +12,12 @@ export default class Core {
     this.authorization = meta.authorization;
     this.externals = meta.externals;
     this.components = meta.components;
-    this.pages = store.pages = meta.pages;
+    this.pages = meta.pages;
   }
 
   loadComponents() {
     return this._loadComponents()
       .then(cmps => {
-        store.components = cmps;
         return cmps;
       });
   }
@@ -71,7 +25,6 @@ export default class Core {
   loadExternals() {
     return this._loadExternals()
       .then(externals => {
-        store.externals = externals;
         return externals;
       });
   }

@@ -1,12 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import {
-  Router,
-  Switch,
-  Route,
-} from 'react-router-dom';
+import React from 'react';
+import { Router, Switch, Route } from 'react-router-dom';
 import Page from './components/page';
-import Core from './common/core';
+import Core from './common/class/core';
 import history from './history';
+import store from './store';
 
 export default class App extends React.Component {
 
@@ -21,8 +18,9 @@ export default class App extends React.Component {
 
   componentDidMount() {
     const makeRequest = async () => {
-      await this.core.loadExternals();
-      await this.core.loadComponents();
+      store.externals = await this.core.loadExternals();
+      store.components = await this.core.loadComponents();
+      store.pages = this.core.pages;
       this.setState({ 'init': true });
     }
     makeRequest();
@@ -33,7 +31,7 @@ export default class App extends React.Component {
     return <>
       { init ? <Router history={history}>
         <Switch>
-          {this.core.pages.map(it => {
+          {store.pages.map(it => {
             return <Route exact key={it.name} path={it.path}>
               <Page
                 layout={it.layout}
@@ -46,4 +44,4 @@ export default class App extends React.Component {
       </Router> : null}
     </>
   }
-};
+}

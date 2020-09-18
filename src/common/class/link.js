@@ -1,6 +1,6 @@
-import { getPage } from './core';
 import qs from 'querystring';
-import history from '../history';
+import getPage from '../utils/get-page';
+import history from '../../history';
 
 export default class Link {
 

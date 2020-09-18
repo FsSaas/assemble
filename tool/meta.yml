@@ -39,7 +39,7 @@ authorization:
   type: cookie
   key: access
   unlogin:
-    redirect: /login
+    redirect: login
 
 externals:
   - type: script
