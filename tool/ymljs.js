@@ -4,5 +4,4 @@ let workflow;
   const fs = require('fs');
   workflow = yaml.safeLoad(fs.readFileSync(`${__dirname}/meta.yml`, 'utf8'));
 })();
-
-console.log(JSON.stringify(workflow, null, 2));
+console.log('window.app = ' + JSON.stringify(workflow));
