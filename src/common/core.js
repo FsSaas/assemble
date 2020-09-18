@@ -1,6 +1,5 @@
 import React from 'react';
 import Resource from './resource';
-import appJson from '../app.json';
 
 const store = {}
 
@@ -21,7 +20,7 @@ export const getComponent = name => {
 
 export default class Core {
 
-  constructor(meta = appJson) {
+  constructor(meta) {
     this.global = window;
     this.resources = meta.resources;
     this.authorization = meta.authorization;

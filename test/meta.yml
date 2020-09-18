@@ -1,12 +1,12 @@
 version: 1.0.0
 
 resources:
-  - name: builds
+  - name: table-data
     type: restful
-    uri: "http://182.92.157.77:7003/api/v1/builds"
-  - name: signin
+    uri: http://39.105.230.7/mock/5f642d3ba107ca0020321882/example/table
+  - name: table-columns
     type: restful
-    uri: "http://127.0.0.1:8080/users/signin"
+    uri: http://39.105.230.7/mock/5f642d3ba107ca0020321882/example/table-columns
   - name: nav
     type: static
     value:
@@ -34,20 +34,21 @@ authorization:
 
 externals:
   - type: script
-    uri: https://cdnjs.cloudflare.com/ajax/libs/antd/4.6.4/antd.min.js
+    uri: //onepaas.oss-cn-beijing.aliyuncs.com/antd/antd.min.js
   - type: style
-    uri: https://cdnjs.cloudflare.com/ajax/libs/antd/4.6.4/antd.min.css
+    uri: //onepaas.oss-cn-beijing.aliyuncs.com/antd/antd.min.css
 
 components:
   - name: nav-layout
     source: 
       type: uri
-      uri: https://onepaas.oss-cn-beijing.aliyuncs.com/ux/lnm-nav-layout/1.0.0/dist/main-1.0.0.min.js
+      uri: //onepaas.oss-cn-beijing.aliyuncs.com/ux/lnm-nav-layout/1.0.0/dist/main-1.0.0.min.js
       path: '@lnm/nav-layout'
   - name: 'datatable'
     source: 
-      type: local
-      path: antd.Table
+      type: uri
+      uri: //onepaas.oss-cn-beijing.aliyuncs.com/ux/lnm-table/1.0.1/dist/main-1.0.1.min.js
+      path: '@lnm/table'
   - name: 'nav'
     source: 
       type: local
@@ -58,7 +59,7 @@ components:
       path: antd.Menu
 
 pages:
-  - name: login
+  - name: home
     path: /
     layout:
       name: nav-layout
@@ -70,9 +71,12 @@ pages:
     components:
       - name: datatable
         slot: content
+        resources:
+          - dataSource: table-data
+          - columns: table-columns
 
   - name: ets
-    path: /entries
+    path: /login
     layout: nav-layout
     resources:
       - datasources: entries

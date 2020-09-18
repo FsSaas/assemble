@@ -41,7 +41,7 @@ export default props => {
   let children = components.map(cmp => {
     let { name, slot, resources = [], } = cmp;
 
-    let reous = packResouces(resources);
+    let reous = packResouces(resources, resourcesObjs);
     let ElementComponent = getComponent(name);
 
     return <ElementComponent key={name} slot={slot} resources={reous} />

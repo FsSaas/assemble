@@ -9,7 +9,8 @@ import Core from './common/core';
 
 export default props => {
 
-  const core = new Core();
+  const core = new Core(props.config);
+
   let resources = core.initResources();
   let [init, setInit] = useState(false);
 
