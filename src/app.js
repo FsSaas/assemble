@@ -12,15 +12,16 @@ export default class App extends React.Component {
     this.state = {
       'init': false
     }
-    this.core = new Core(props.config);
+    let { config } = props;
+    this.core = new Core(config);
     this.resources = this.core.initResources();
+    store.config = config;
   }
 
   componentDidMount() {
     const makeRequest = async () => {
-      store.externals = await this.core.loadExternals();
+      await this.core.loadExternals();
       store.components = await this.core.loadComponents();
-      store.pages = this.core.pages;
       this.setState({ 'init': true });
     }
     makeRequest();
@@ -28,10 +29,11 @@ export default class App extends React.Component {
 
   render() {
     let { init } = this.state;
+    let { pages = [] } = store.config;
     return <>
       { init ? <Router history={history}>
         <Switch>
-          {store.pages.map(it => {
+          {pages.map(it => {
             return <Route exact key={it.name} path={it.path}>
               <Page
                 layout={it.layout}

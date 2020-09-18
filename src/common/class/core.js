@@ -1,5 +1,4 @@
 
-import React from 'react';
 import Resource from './resource';
 import createScript from '../utils/create-script';
 import createLink from '../utils/create-link';
@@ -9,24 +8,16 @@ export default class Core {
   constructor(meta) {
     this.global = window;
     this.resources = meta.resources;
-    this.authorization = meta.authorization;
     this.externals = meta.externals;
     this.components = meta.components;
-    this.pages = meta.pages;
   }
 
   loadComponents() {
     return this._loadComponents()
-      .then(cmps => {
-        return cmps;
-      });
   }
 
   loadExternals() {
     return this._loadExternals()
-      .then(externals => {
-        return externals;
-      });
   }
 
   _getValueFormPath(path) {

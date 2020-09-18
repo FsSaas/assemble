@@ -1,7 +1,8 @@
 import store from '../../store';
 
 export default name => {
-  let [cmp] = store.components.filter(it => it.name == name);
+  let { components } = store;
+  let [cmp] = components.filter(it => it.name == name);
   if (!cmp) {
     throw new Error('未找到组件: ' + name);
   }

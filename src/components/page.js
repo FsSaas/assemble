@@ -37,10 +37,10 @@ export default props => {
   });
 
   // 权限判断、跳转
-  const access = auth();
+  const { access, path = '' } = auth();
 
   return <PageComponent {...layoutProps}>
-    {!access ? <Redirect to="/" /> : null}
+    {!access ? <Redirect to={path} /> : null}
     {children}
   </PageComponent>
 }
