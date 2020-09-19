@@ -4,9 +4,9 @@ export default (deps = [], object) => {
   let res = {};
   for (let i = 0; i < deps.length; i++) {
     let kv = deps[i];
-    if (typeof kv == 'string') kv = { [kv]: key };
+    if (typeof kv == 'string') kv = { [kv]: kv };
     let [key] = Object.keys(kv);
-    res[key] = object[key];
+    res[key] = object[kv[key]];
   }
   return res;
 }

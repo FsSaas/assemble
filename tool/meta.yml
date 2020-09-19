@@ -3,7 +3,6 @@ version: 1.0.0
 resources:
   - name: table-data
     type: restful
-    load: sync
     uri: http://39.105.230.7/mock/5f642d3ba107ca0020321882/example/table
   - name: nav
     type: static
@@ -51,7 +50,7 @@ components:
   - name: form
     source: 
       type: uri
-      uri: http://onepaas.oss-cn-beijing.aliyuncs.com/ux/lnm-form/1.0.1/dist/main-1.0.1.min.js
+      uri: http://onepaas.oss-cn-beijing.aliyuncs.com/ux/lnm-form/1.0.3/dist/main-1.0.3.min.js
       path: '@lnm/form'
   - name: login
     source: 
@@ -70,20 +69,19 @@ pages:
     layout:
       name: nav-layout
       resource-deps:
-      - nav
+        - nav
+        - table-data
       statics:
         logoSrc: https://circleci.com/docs/assets/img/logos/logo-wordmark.svg
         navType: slot
         activeNav: project
         activeMenu: build
     resources:
-      - name: table-data
-        type: restful
-        load: sync
-        uri: http://39.105.230.7/mock/5f642d3ba107ca0020321882/example/table
       - name: table-columns
         type: restful
         uri: http://39.105.230.7/mock/5f642d3ba107ca0020321882/example/table-columns
+    resource-deps:
+      - table-data
     components:   
       - name: datatable
         slot: project
@@ -107,12 +105,6 @@ pages:
   
   - name: detail
     path: /detail-form
-    layout:
-      name: nav-layout
-      statics:
-        logoSrc: https://circleci.com/docs/assets/img/logos/logo-wordmark.svg
-      resource-deps:
-        - nav
     resources:
       - name: fomr-detail-fields
         type: restful
