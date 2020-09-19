@@ -1,4 +1,5 @@
 import fetch from 'node-fetch';
+import qs from 'querystring';
 
 export default class Resource {
   constructor(opts) {
@@ -27,38 +28,24 @@ export default class Resource {
         throw err;
       });
   }
-
-  getAll() {
+  get(args) {
+    return this.getAll(args);
+  }
+  getAll(args) {
     if (this.type == 'restful') {
-      return this.fetch(this.uri);
+      return this.fetch(`${this.uri}?${qs.stringify(args)}`);
     } else {
-      return this.value;
+      return Promise.resolve(this.value);
     }
   }
-  getById(id) {
-    return this.fetch(`${this.uri}?id=${id}`);
-  }
-  deleteById(id) {
-    return this.fetch(`${this.uri}/${id}`, {
-      'method': 'DELETE',
-    });
-  }
-  newOne(data) {
-    if (!data || typeof data !== 'object') throw new Error('Response.newOne(data) need "data" argument.')
-    return this.fetch(this.uri, {
-      'method': 'POST',
-      'body': JSON.stringify(data)
-    });
-  }
-  updateById(id, data) {
-    if (!data || typeof data !== 'object') throw new Error('Response.updateById(id,data) need "data" argument.')
-    return this.fetch(`${this.uri}/${id}`, {
-      'method': 'PUT',
-      'body': JSON.stringify(data)
-    });
-  }
   post(data) {
-    return this.newOne(data);
+    return this.fetch(this.uri, {
+      'body': JSON.stringify(data),
+      'method': 'POST',
+      'headers': {
+        'Content-Type': 'application/json'
+      }
+    });
   }
 }
 

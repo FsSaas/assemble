@@ -3,10 +3,10 @@ version: 1.0.0
 resources:
   - name: fomr-detail-fields
     type: restful
-    uri: http://39.105.230.7/mock/5f642d3ba107ca0020321882/example/form-detail-fields
+    uri: http://39.105.230.7/mock/5f642d3ba107ca0020321882/example/detail-form-fields
   - name: form-detail
     type: restful
-    uri: http://39.105.230.7/mock/5f642d3ba107ca0020321882/example/form-detail
+    uri: http://39.105.230.7/mock/5f642d3ba107ca0020321882/example/detail-form
   - name: table-data
     type: restful
     uri: http://39.105.230.7/mock/5f642d3ba107ca0020321882/example/table
@@ -16,27 +16,30 @@ resources:
   - name: form
     type: restful
     uri: http://39.105.230.7/mock/5f642d3ba107ca0020321882/example/form
-  - name: detail-id
-    type: query
-    key: id 
   - name: nav
     type: static
     value:
-      - key: 基础服务
-        label: infras
-        path: /base
-      - key: 管理
-        label: mange
-        path: /mange
-  - name: menu
-    type: static
-    value:
-      - key: 基础服务
-        label: infras
-        path: /base
-      - key: 管理
-        label: mange
-        path: /mange
+      - key: infras
+        label: 基础设施
+        menus:
+          - key: infras
+            label: 概览
+            path: /preview
+          - key: solution
+            label: 解决方案
+            path: /solutions
+          - key: pipeline
+            label: 工作流
+            path: /pipeline
+      - key: project
+        label: 项目
+        menus:
+          - key: project
+            label: 项目
+            path: /project
+          - key: build
+            label: 构建
+            path: /build
 
 authorization:
   type: jwt
@@ -54,8 +57,13 @@ components:
   - name: nav-layout
     source: 
       type: uri
-      uri: //onepaas.oss-cn-beijing.aliyuncs.com/ux/lnm-nav-layout/1.0.0/dist/main-1.0.0.min.js
+      uri: //onepaas.oss-cn-beijing.aliyuncs.com/ux/lnm-nav-layout/1.0.4/dist/main-1.0.4.min.js
       path: '@lnm/nav-layout'
+  - name: form
+    source: 
+      type: uri
+      uri: //onepaas.oss-cn-beijing.aliyuncs.com/ux/lnm-form/1.0.1/dist/main-1.0.1.min.js
+      path: '@lnm/form'
   - name: login
     source: 
       type: uri
@@ -64,16 +72,8 @@ components:
   - name: 'datatable'
     source: 
       type: uri
-      uri: //onepaas.oss-cn-beijing.aliyuncs.com/ux/lnm-table/1.0.1/dist/main-1.0.1.min.js
+      uri: //onepaas.oss-cn-beijing.aliyuncs.com/ux/lnm-table/1.0.2/dist/main-1.0.2.min.js
       path: '@lnm/table'
-  - name: 'nav'
-    source: 
-      type: local
-      path: antd.Menu
-  - name: 'menu'
-    source: 
-      type: local
-      path: antd.Menu
 
 pages:
   - name: home
@@ -82,13 +82,15 @@ pages:
       name: nav-layout
       statics:
         logoSrc: https://circleci.com/docs/assets/img/logos/logo-wordmark.svg
+        navType: slot
+        activeNav: project
+        activeMenu: build
       resources:
         - nav
-        - leftMenu: menu
     components:
       - name: datatable
-        slot: content
-        resources:
+        slot: project
+        resources: 
           - dataSource: table-data
           - columns: table-columns
         links:
@@ -104,21 +106,21 @@ pages:
         links:
           - home
   
-  - name: one-detail
+  - name: detail
     path: /detail-form
     layout:
       name: nav-layout
       statics:
         logoSrc: https://circleci.com/docs/assets/img/logos/logo-wordmark.svg
+      resources:
+        - nav
     query:
-      - id 
+      - id
     components:
       - name: form
         slot: content
         resources:
           - data: form-detail
           - fields: fomr-detail-fields
-          - id: detail-id
         links:
           - back: home
-       

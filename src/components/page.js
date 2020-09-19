@@ -65,15 +65,17 @@ export default props => {
       slot={slot}
       resources={reous}
       links={linkObjs}
-      query={params}
+      {...params}
     />
   });
 
   // 权限判断、跳转
   const { access, path = '' } = auth();
+  let childrenList = [];
+  if (access) childrenList.push(<Redirect to={path} />);
+  childrenList = childrenList.concat(children);
 
   return <PageComponent {...layoutProps}>
-    {!access ? <Redirect to={path} /> : null}
-    {children}
+    {childrenList}
   </PageComponent>
 }
