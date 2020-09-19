@@ -4,17 +4,18 @@ import Page from './components/page';
 import Core from './common/class/core';
 import history from './history';
 import store from './store';
+import getResource from './common/utils/get-resource';
 
 export default class App extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      'init': false
+      'init': false,
+      'resData': {}
     }
     let { config } = props;
     this.core = new Core(config);
-    this.resources = this.core.initResources();
     store.config = config;
   }
 
@@ -22,25 +23,31 @@ export default class App extends React.Component {
     const makeRequest = async () => {
       await this.core.loadExternals();
       store.components = await this.core.loadComponents();
-      this.setState({ 'init': true });
+      let promises = store.config.resources.map(it => getResource(it));
+      Promise.all(promises)
+        .then(resources => {
+          let res = {};
+          resources.forEach(it => res[it.name] = it.value);
+          this.setState({
+            'init': true,
+            'resData': res
+          })
+        })
     }
     makeRequest();
   }
 
   render() {
-    let { init } = this.state;
+    let { init, resData } = this.state;
     let { pages = [] } = store.config;
     return <>
       { init ? <Router history={history}>
         <Switch>
           {pages.map(it => {
-            let { layout, components, query, } = it;
             return <Route exact key={it.name} path={it.path}>
               <Page
-                layout={layout}
-                components={components}
-                resources={this.resources}
-                query={query}
+                {...it}
+                appResources={resData}
               />
             </Route>
           })}

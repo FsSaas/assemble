@@ -1,81 +1,58 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Redirect } from 'react-router-dom';
-import qs from 'querystring';
-import getComponent from '../common/utils/get-component';
 import auth from '../common/class/auth';
-import packLinks from '../common/utils/pack-links';
-import packResources from '../common/utils/pack-resources';
-import history from '../history';
-
+import Cmp from './cmp';
+import Layout from './layout';
+import getResource from '../common/utils/get-resource';
 
 export default props => {
   let {
     layout, // 布局
     components, // 组件集合
-    query = [], // 页面访问参数
-    'resources': resourcesObjs = {} // 实例后的资源
+    resources = [],
+    appResources = {},
   } = props;
 
-  let PageComponent, layoutProps = {};
+  let [resData, setResData] = useState({});
 
-  // 组装query对象
-  let { search = '' } = history.location;
-  search = search.replace(/^\?/, '');
-  let queryParams = qs.parse(search);
-
-  // 布局组件
-  if (layout) {
-    if (typeof layout == 'string') {
-      PageComponent = getComponent(layout);
-    } else if (typeof layout == 'object') {
-      let { resources = [], statics = {} } = layout;
-      PageComponent = getComponent(layout.name);
-      layoutProps = Object.assign(
-        layoutProps,
-        { 'resources': packResources(resources, resourcesObjs) },
-        statics
-      );
+  /**
+   * 获取所有配置页面级数据源
+   */
+  useEffect(() => {
+    const makeResources = async () => {
+      if (resources.length) {
+        let promises = resources.map(it => getResource(it));
+        Promise.all(promises)
+          .then(resources => {
+            let res = {};
+            resources.forEach(it => res[it.name] = it.value);
+            setResData(res);
+          })
+      }
     }
-  } else {
-    // 没有layout时，默认使用div
-    PageComponent = 'div';
-  }
+    makeResources();
+  }, []);
 
   // 组织页面内组件
-  let children = components.map(cmp => {
-    let { name, slot, resources = [], links = [] } = cmp;
-
-    let reous = packResources(resources, resourcesObjs);
-    let linkObjs = packLinks(links);
-    let ElementComponent = getComponent(name);
-
-    // 根据配置取出需要传入子组件的参数
-    let params = {};
-    query.forEach(it => {
-      if (typeof it == 'object') {
-        let [key] = Object.keys(it);
-        params[key] = it[key];
-      } else if (typeof it == 'string') {
-        params[it] = queryParams[it];
-      }
-    });
-
-    return <ElementComponent
-      key={name}
-      slot={slot}
-      resources={reous}
-      links={linkObjs}
-      {...params}
-    />
-  });
+  let children = components.map(cmp => <Cmp {...cmp} pageResources={resData} />);
 
   // 权限判断、跳转
   const { access, path = '' } = auth();
   let childrenList = [];
-  if (access) childrenList.push(<Redirect to={path} />);
+  if (!access) childrenList.push(<Redirect to={path} />);
   childrenList = childrenList.concat(children);
 
-  return <PageComponent {...layoutProps}>
-    {childrenList}
-  </PageComponent>
+  // 格式化 layout 配置
+  let LayoutComponent = Layout;
+  if (!layout) {
+    LayoutComponent = 'div';
+  } else if (typeof layout == 'string') {
+    layout = { 'name': layout };
+  }
+
+  return <>
+    <LayoutComponent {...layout} appResources={appResources}>
+      {childrenList}
+    </LayoutComponent>
+  </>
 }

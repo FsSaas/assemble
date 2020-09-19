@@ -2,6 +2,7 @@
 import Resource from './resource';
 import createScript from '../utils/create-script';
 import createLink from '../utils/create-link';
+import getResource from '../utils/get-resource';
 
 export default class Core {
 
@@ -71,14 +72,5 @@ export default class Core {
         })
       })
     );
-  }
-
-  initResources() {
-    let res = {};
-    for (let i = 0; i < this.resources.length; i++) {
-      let it = this.resources[i];
-      res[it.name] = new Resource(it);
-    }
-    return res;
   }
 }
