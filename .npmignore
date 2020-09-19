@@ -1,0 +1,6 @@
+tool
+test
+src
+node_modules
+dist
+.script
