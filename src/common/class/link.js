@@ -13,7 +13,7 @@ export default class Link {
 
   goto(ars = {}) {
     let search = qs.stringify(ars)
-    let { path } = getPage(this.name);
+    let { path } = getPage(this.value);
     history.push(`${path}?${search}`);
   }
 }

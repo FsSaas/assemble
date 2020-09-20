@@ -10,6 +10,7 @@ export default props => {
     name,
     slot,
     links = [],
+    statics = {},
     'resource-deps': resourceDeps = [], // 子组件依赖的数据源
     'query-deps': queryDeps = [],
     pageResources = {}
@@ -41,6 +42,7 @@ export default props => {
     key={name}
     slot={slot}
     links={linkObjs}
+    {...statics}
     {...params}
     {...depsData}
   />

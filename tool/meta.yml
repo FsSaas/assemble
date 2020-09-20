@@ -7,27 +7,12 @@ resources:
   - name: nav
     type: static
     value:
-      - key: infras
-        label: 基础设施
+      - key: home
+        label: 首页
         menus:
-          - key: infras
-            label: 概览
-            path: /preview
-          - key: solution
-            label: 解决方案
-            path: /solutions
-          - key: pipeline
-            label: 工作流
-            path: /pipeline
-      - key: project
-        label: 项目
-        menus:
-          - key: project
-            label: 项目
-            path: /project
-          - key: build
-            label: 构建
-            path: /build
+          - key: list
+            label: 列表
+            path: /list
 
 authorization:
   type: jwt
@@ -50,7 +35,7 @@ components:
   - name: form
     source: 
       type: uri
-      uri: http://onepaas.oss-cn-beijing.aliyuncs.com/ux/lnm-form/1.0.6/dist/main-1.0.6.min.js
+      uri: http://onepaas.oss-cn-beijing.aliyuncs.com/ux/lnm-form/1.0.9/dist/main-1.0.9.min.js
       path: '@lnm/form'
   - name: login
     source: 
@@ -60,12 +45,12 @@ components:
   - name: 'datatable'
     source: 
       type: uri
-      uri: http://onepaas.oss-cn-beijing.aliyuncs.com/ux/lnm-table/1.0.3/dist/main-1.0.3.min.js
+      uri: http://onepaas.oss-cn-beijing.aliyuncs.com/ux/lnm-table/1.0.5/dist/main-1.0.5.min.js
       path: '@lnm/table'
 
 pages:
   - name: home
-    path: /home
+    path: /list
     layout:
       name: nav-layout
       resource-deps:
@@ -73,8 +58,8 @@ pages:
       statics:
         logoSrc: https://circleci.com/docs/assets/img/logos/logo-wordmark.svg
         navType: slot
-        activeNav: project
-        activeMenu: build
+        activeNav: home
+        activeMenu: list
     resources:
       - name: table-columns
         type: restful
@@ -83,7 +68,7 @@ pages:
       - table-data
     components:   
       - name: datatable
-        slot: project
+        slot: list
         resource-deps: 
           - dataSource: table-data
           - columns: table-columns
@@ -111,8 +96,8 @@ pages:
       statics:
         logoSrc: https://circleci.com/docs/assets/img/logos/logo-wordmark.svg
         navType: slot
-        activeNav: project
-        activeMenu: project
+        activeNav: home
+        activeMenu: list
     resources:
       - name: fomr-detail-fields
         type: restful
@@ -122,7 +107,14 @@ pages:
         uri: http://39.105.230.7/mock/5f642d3ba107ca0020321882/example/detail-form
     components:
       - name: form
-        slot: project
+        slot: list
+        statics:
+          title: 详情
+          btnText: 保存
+          hasBack: true
+          showBtn: true
+          hasHeader: true
+          saveUri: http://easymock.onelaas.com/mock/5f642d3ba107ca0020321882/example/edit-form
         resource-deps:
           - data: form-detail
           - fields: fomr-detail-fields
