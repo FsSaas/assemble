@@ -45,17 +45,17 @@ components:
   - name: nav-layout
     source: 
       type: uri
-      uri: http://onepaas.oss-cn-beijing.aliyuncs.com/ux/lnm-nav-layout/1.0.5/dist/main-1.0.5.min.js
+      uri: http://oss.onelaas.com/ux/lnm-nav-layout/1.0.6/dist/main-1.0.6.min.js
       path: '@lnm/nav-layout'
   - name: form
     source: 
       type: uri
-      uri: http://onepaas.oss-cn-beijing.aliyuncs.com/ux/lnm-form/1.0.3/dist/main-1.0.3.min.js
+      uri: http://onepaas.oss-cn-beijing.aliyuncs.com/ux/lnm-form/1.0.6/dist/main-1.0.6.min.js
       path: '@lnm/form'
   - name: login
     source: 
       type: uri
-      uri: http://onepaas.oss-cn-beijing.aliyuncs.com/ux/lnm-login/1.0.1/dist/main-1.0.1.min.js
+      uri: http://onepaas.oss-cn-beijing.aliyuncs.com/ux/lnm-login/1.0.2/dist/main-1.0.2.min.js
       path: '@lnm/login'
   - name: 'datatable'
     source: 
@@ -70,7 +70,6 @@ pages:
       name: nav-layout
       resource-deps:
         - nav
-        - table-data
       statics:
         logoSrc: https://circleci.com/docs/assets/img/logos/logo-wordmark.svg
         navType: slot
@@ -105,6 +104,15 @@ pages:
   
   - name: detail
     path: /detail-form
+    layout:
+      name: nav-layout
+      resource-deps:
+        - nav
+      statics:
+        logoSrc: https://circleci.com/docs/assets/img/logos/logo-wordmark.svg
+        navType: slot
+        activeNav: project
+        activeMenu: project
     resources:
       - name: fomr-detail-fields
         type: restful
@@ -114,7 +122,7 @@ pages:
         uri: http://39.105.230.7/mock/5f642d3ba107ca0020321882/example/detail-form
     components:
       - name: form
-        slot: content
+        slot: project
         resource-deps:
           - data: form-detail
           - fields: fomr-detail-fields
