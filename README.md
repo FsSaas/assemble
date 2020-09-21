@@ -13,7 +13,7 @@
 ## 数据对象标准行为
 ### 获取数据集合
 
-uri不提供数page,size参数时默认获取10条数据，不提供排序参数时，返回数据默认按照ID倒叙
+uri不提供page,size参数时默认获取10条数据，不提供排序参数时，返回数据默认按照ID倒叙
 * http://www.faass.com/metaobj/api/v1/entries
 * http://www.faass.com/metaobj/api/v1/entries?name=z3&size=10&page=1
 
@@ -49,7 +49,7 @@ uri不提供数page,size参数时默认获取10条数据，不提供排序参数
 * http://www.faass.com/metaobj/entries/fields
 ```
 Response:
-{
+[{
   'name': 'name',
   'label': '姓名',
   'type': 'Text',          // 借鉴数据库表资源类型 Int, Varchar, Date, Text
@@ -58,5 +58,5 @@ Response:
   'help': '',              // 字段帮助的描述信息，用于表单字段的提示，在字段下使用label方式展示
   'rules': [],             // 验证规则，主要用于数据格式验证
   'hidden': true           //  
-}
+}]
 ```
