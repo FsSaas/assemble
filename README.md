@@ -47,7 +47,7 @@ uri不提供数page,size参数时默认获取10条数据，不提供排序参数
 ### 获取数据对象的字段描述
 数据对象必须提供有字段描述的接口，接口返回所有对象字段信息，如：
 * http://www.faass.com/metaobj/entries/fields
-`
+```
 Response:
 {
   'name': 'name',
@@ -58,4 +58,4 @@ Response:
   'help': '',              // 字段帮助的描述信息，用于表单字段的提示，在字段下使用label方式展示
   'rules': []              // 验证规则，主要用于数据格式验证
 }
-`
+```
