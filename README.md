@@ -13,9 +13,24 @@
 ## 数据对象标准行为
 ### 获取数据集合
 
-uri不加参数默认获取10条数据，接口返回数据按照id倒叙排列
+uri不提供数page,limit参数时默认获取10条数据，不提供排序参数时，返回数据默认按照ID倒叙
 * http://www.faass.com/metaobj/api/v1/entries
 * http://www.faass.com/metaobj/api/v1/entries?name=z3&limit=10&page=1
+
+#### 获取数据行为标准参数
+* page 数据页
+* size 每页数据默认行数
+* order 排序参数
+
+#### 数据值的几种匹配类型
+* 全等 
+* 包含 in
+* 大于 gt
+* 小于 lt
+
+匹配规则的使用，如：
+* http://www.faass.com/metaobj/api/v1/entries?name=zhangyue&limit=10&page=1
+* http://www.faass.com/metaobj/api/v1/entries?name=$in_zhang&age$gt_18&limit=10&page=1
 
 ### 获取某个数据
 获取某条数据，只支持 /{id} 的形式，如：
