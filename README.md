@@ -60,3 +60,14 @@ Response:
   'hidden': true           //  
 }]
 ```
+
+## 接口返回值
+接口直接返回数据，不要在数据之上封装数据结构，接口请求的异常情况使用 HTTP Code，如：
+* 200 OK - [GET]：服务器成功返回用户请求的数据
+* 201 CREATED - [POST/PUT/PATCH]：用户新建或修改数据成功
+* 204 NO CONTENT - [DELETE]：用户删除数据成功
+* 400 INVALID REQUEST - [POST/PUT/PATCH]：用户发出的请求有错误
+* 401 Unauthorized - [*]：表示用户没有权限
+* 404 NOT FOUND - [*]：用户发出的请求针对的是不存在的记录
+* 406 Not Acceptable - [GET]：用户请求的格式不可得
+* 500 INTERNAL SERVER ERROR - [*]：服务器发生错误
