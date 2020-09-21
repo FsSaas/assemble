@@ -73,7 +73,7 @@ pages:
           - dataSource: table-data
           - columns: table-columns
         links:
-          - detail: one-detail
+          - detail
 
   - name: login
     path: /
@@ -89,6 +89,8 @@ pages:
   
   - name: detail
     path: /detail-form
+    query:
+      - id
     layout:
       name: nav-layout
       resource-deps:
@@ -115,6 +117,8 @@ pages:
           showBtn: true
           hasHeader: true
           saveUri: http://easymock.onelaas.com/mock/5f642d3ba107ca0020321882/example/edit-form
+        query-deps:
+          - formId: id
         resource-deps:
           - data: form-detail
           - fields: fomr-detail-fields

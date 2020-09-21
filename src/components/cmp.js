@@ -20,20 +20,22 @@ export default props => {
   let ElementComponent = getComponent(name);
 
   // 组装query对象
-  let { search = '' } = history.location;
-  search = search.replace(/^\?/, '');
-  let queryParams = qs.parse(search);
-
   // 根据配置取出需要传入子组件的参数
   let params = {};
-  queryDeps.forEach(it => {
-    if (typeof it == 'object') {
-      let [key] = Object.keys(it);
-      params[key] = it[key];
-    } else if (typeof it == 'string') {
-      params[it] = queryParams[it];
-    }
-  });
+  if (queryDeps.length) {
+    let { search = '' } = history.location;
+    search = search.replace(/^\?/, '');
+    let queryParams = qs.parse(search);
+    // 循环Query依赖配置，提取参数
+    queryDeps.forEach(it => {
+      if (typeof it == 'object') {
+        let [key] = Object.keys(it);
+        params[key] = queryParams[it[key]];
+      } else if (typeof it == 'string') {
+        params[it] = queryParams[it];
+      }
+    });
+  }
 
   // 依赖页面上的Resources数据
   let depsData = getResFromDeps(resourceDeps, pageResources);
