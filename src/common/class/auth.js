@@ -8,13 +8,13 @@ export default () => {
   if (!authorization) {
     return { 'access': true };
   }
-  let { key, type, unlogin = {} } = authorization;
+  let { accessToken, type, unlogin = {} } = authorization;
  
   let token;
   if (type == 'cookie') {
-    token = cookie.get(key);
+    token = cookie.get(accessToken);
   } else if (type == 'jwt') {
-    token = localStorage.getItem(key);
+    token = localStorage.getItem(accessToken);
   }
 
   if (!token) { // 未找到登录后标识

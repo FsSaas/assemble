@@ -24,15 +24,13 @@ export default class App extends React.Component {
       await this.core.loadExternals();
       store.components = await this.core.loadComponents();
       let promises = store.config.resources.map(it => getResource(it));
-      Promise.all(promises)
-        .then(resources => {
-          let res = {};
-          resources.forEach(it => res[it.name] = it.value);
-          this.setState({
-            'init': true,
-            'resData': res
-          })
-        })
+      let resources = await Promise.all(promises)
+      let res = {};
+      resources.forEach(it => res[it.name] = it.value);
+      this.setState({
+        'init': true,
+        'resData': res
+      })
     }
     makeRequest();
   }

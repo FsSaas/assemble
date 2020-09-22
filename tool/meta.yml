@@ -16,7 +16,8 @@ resources:
 
 authorization:
   type: jwt
-  key: access
+  access-token: ACCESSTOKEN
+  auth-uri: http://39.105.230.7/mock/5f642d3ba107ca0020321882/example/signin
   unlogin:
     redirect: login
 

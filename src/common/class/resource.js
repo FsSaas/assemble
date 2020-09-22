@@ -1,4 +1,4 @@
-import fetch from 'node-fetch';
+import fetch from '../utils/fetch';
 import qs from 'querystring';
 
 export default class Resource {
@@ -21,7 +21,6 @@ export default class Resource {
     opts.headers['content-type'] = 'application/json';
     opts.headers['method'] = opts.headers['method'] || 'GET';
     return fetch(uri, opts)
-      .then(res => res.json())
       .then(res => this.response = res)
       .catch(err => {
         this.error = err;
