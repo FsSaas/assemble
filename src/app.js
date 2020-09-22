@@ -5,6 +5,7 @@ import Core from './common/class/core';
 import history from './history';
 import store from './store';
 import getResource from './common/utils/get-resource';
+import schema from './common/utils/schema';
 
 export default class App extends React.Component {
 
@@ -15,6 +16,7 @@ export default class App extends React.Component {
       'resData': {}
     }
     let { config } = props;
+    schema(config); // 对 scheme 进行验证
     this.core = new Core(config);
     store.config = config;
   }
