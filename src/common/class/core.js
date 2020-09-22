@@ -1,8 +1,6 @@
 
-import Resource from './resource';
 import createScript from '../utils/create-script';
 import createLink from '../utils/create-link';
-import getResource from '../utils/get-resource';
 
 export default class Core {
 

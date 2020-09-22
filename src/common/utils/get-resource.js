@@ -11,7 +11,8 @@ export default async meta => {
         'headers': {
           'content-type': 'application/json'
         }
-      }).then(value => {
+      }).then(res => res.json())
+      .then(value => {
         resolve({ name, value })
       });
 

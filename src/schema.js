@@ -20,7 +20,7 @@ let configSchema = {
       'properties': {
         'type': { 'type': 'string' },
         'access-token': { 'type': 'string' },
-        'auth-uri': { 'type': 'string' },
+        'auth-pages': { 'types': ['string', 'object'] },
         'un-auth': {
           'type': 'object',
           'properties': {

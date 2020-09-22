@@ -17,8 +17,10 @@ resources:
 authorization:
   type: jwt
   access-token: ACCESSTOKEN
-  auth-uri: http://39.105.230.7/mock/5f642d3ba107ca0020321882/example/signin
-  unlogin:
+  auth-pages:
+    - home
+    - detail
+  un-auth:
     redirect: login
 
 externals:
@@ -31,7 +33,7 @@ components:
   - name: nav-layout
     source: 
       type: uri
-      uri: http://oss.onelaas.com/ux/lnm-nav-layout/1.0.6/dist/main-1.0.6.min.js
+      uri: http://oss.onelaas.com/ux/lnm-nav-layout/1.0.7/dist/main-1.0.7.min.js
       path: '@lnm/nav-layout'
   - name: form
     source: 
@@ -41,12 +43,12 @@ components:
   - name: login
     source: 
       type: uri
-      uri: http://onepaas.oss-cn-beijing.aliyuncs.com/ux/lnm-login/1.0.2/dist/main-1.0.2.min.js
+      uri: http://onepaas.oss-cn-beijing.aliyuncs.com/ux/lnm-login/1.0.7/dist/main-1.0.7.min.js
       path: '@lnm/login'
   - name: 'datatable'
     source: 
       type: uri
-      uri: http://onepaas.oss-cn-beijing.aliyuncs.com/ux/lnm-table/1.0.5/dist/main-1.0.5.min.js
+      uri: http://oss.onelaas.com/ux/lnm-table/1.0.12/dist/main-1.0.12.min.js
       path: '@lnm/table'
 
 pages:
@@ -64,12 +66,19 @@ pages:
     resources:
       - name: table-columns
         type: restful
-        uri: http://39.105.230.7/mock/5f642d3ba107ca0020321882/example/table-columns
+        uri: http://39.105.230.7/mock/5f642d3ba107ca0020321882/example/table1/columns
     resource-deps:
       - table-data
     components:   
       - name: datatable
         slot: list
+        statics:
+          uri: http://39.105.230.7/mock/5f642d3ba107ca0020321882/example/table1
+          hasHeader: true
+          size: small
+          showBtn: true
+          btnText: '新增'
+          title: 'Entity'
         resource-deps: 
           - dataSource: table-data
           - columns: table-columns
@@ -82,9 +91,8 @@ pages:
       - name: login
         slot: content
         statics:
-          submit: http://39.105.230.7/mock/5f642d3ba107ca0020321882/example/form
-        resources:
-          - form
+          signinUri: http://39.105.230.7/mock/5f642d3ba107ca0020321882/example/signin
+          accessToken: ACCESSTOKEN
         links:
           - home
   

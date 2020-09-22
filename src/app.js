@@ -5,7 +5,11 @@ import Core from './common/class/core';
 import history from './history';
 import store from './store';
 import getResource from './common/utils/get-resource';
-import schema from './common/utils/schema';
+import schema from './schema';
+import fetch from './common/utils/fetch';
+
+// 用于统一处理权限验证
+window.fetch = fetch;
 
 export default class App extends React.Component {
 
