@@ -17,6 +17,8 @@ export default props => {
   } = props;
 
   let linkObjs = packLinks(links);
+  linkObjs['history'] = history;
+
   let ElementComponent = getComponent(name);
 
   // 组装query对象

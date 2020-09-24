@@ -1,7 +1,10 @@
 import Link from '../class/link';
+import history from '../../history';
 
 export default links => {
-  let linkInstances = [];
+  let linkInstances = {};
+
+  // 拼装yml配置的相关页面
   for (let i = 0; i < links.length; i++) {
     let it = links[i], itObj = {};
     if (typeof it == 'string') {
@@ -15,5 +18,11 @@ export default links => {
       linkInstances[key] = new Link(itObj);
     }
   }
+
+  // 添加通用api
+  linkInstances['go'] = path => {
+    history.push(path);
+  }
+
   return linkInstances;
 }
