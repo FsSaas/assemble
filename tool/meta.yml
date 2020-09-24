@@ -4,15 +4,24 @@ resources:
   - name: table-data
     type: restful
     uri: http://39.105.230.7/mock/5f642d3ba107ca0020321882/example/table
+    response:
+      transform:
+        name: $.name
+        config:
+          name: $.name
+          age: $.age
+          config:
+            name: $.name
+            address: $.address
   - name: nav
     type: static
     value:
-      - key: home
+      - key: entities
         label: 首页
         menus:
-          - key: list
-            label: 列表
-            path: /list
+          - key: entities
+            label: Entities
+            path: /entities
 
 authorization:
   type: jwt
@@ -31,29 +40,25 @@ externals:
 
 components:
   - name: nav-layout
-    source: 
-      type: uri
-      uri: http://oss.onelaas.com/ux/lnm-nav-layout/1.0.7/dist/main-1.0.7.min.js
-      path: '@lnm/nav-layout'
+    type: uri
+    uri: http://oss.onelaas.com/ux/lnm-nav-layout/1.0.7/dist/main-1.0.7.min.js
+    path: '@lnm/nav-layout'
   - name: form
-    source: 
-      type: uri
-      uri: http://onepaas.oss-cn-beijing.aliyuncs.com/ux/lnm-form/1.0.9/dist/main-1.0.9.min.js
-      path: '@lnm/form'
+    type: uri
+    uri: http://onepaas.oss-cn-beijing.aliyuncs.com/ux/lnm-form/1.0.9/dist/main-1.0.9.min.js
+    path: '@lnm/form'
   - name: login
-    source: 
-      type: uri
-      uri: http://onepaas.oss-cn-beijing.aliyuncs.com/ux/lnm-login/1.0.7/dist/main-1.0.7.min.js
-      path: '@lnm/login'
+    type: uri
+    uri: http://onepaas.oss-cn-beijing.aliyuncs.com/ux/lnm-login/1.0.7/dist/main-1.0.7.min.js
+    path: '@lnm/login'
   - name: 'datatable'
-    source: 
-      type: uri
-      uri: http://oss.onelaas.com/ux/lnm-table/1.0.12/dist/main-1.0.12.min.js
-      path: '@lnm/table'
+    type: uri
+    uri: http://oss.onelaas.com/ux/lnm-table/1.0.12/dist/main-1.0.12.min.js
+    path: '@lnm/table'
 
 pages:
-  - name: home
-    path: /list
+  - name: entities
+    path: /entities
     layout:
       name: nav-layout
       resource-deps:
@@ -61,8 +66,8 @@ pages:
       statics:
         logoSrc: https://circleci.com/docs/assets/img/logos/logo-wordmark.svg
         navType: slot
-        activeNav: home
-        activeMenu: list
+        activeNav: entities
+        activeMenu: entities
     resources:
       - name: table-columns
         type: restful
@@ -71,7 +76,7 @@ pages:
       - table-data
     components:   
       - name: datatable
-        slot: list
+        slot: entities
         statics:
           uri: http://39.105.230.7/mock/5f642d3ba107ca0020321882/example/table1
           hasHeader: true
@@ -83,7 +88,7 @@ pages:
           - dataSource: table-data
           - columns: table-columns
         links:
-          - detail
+          - detail: entities-detail
 
   - name: login
     path: /
@@ -94,10 +99,10 @@ pages:
           signinUri: http://39.105.230.7/mock/5f642d3ba107ca0020321882/example/signin
           accessToken: ACCESSTOKEN
         links:
-          - home
+          - home: entities
   
-  - name: detail
-    path: /detail-form
+  - name: entities-detail
+    path: /entities-detail
     query:
       - id
     layout:
@@ -107,8 +112,8 @@ pages:
       statics:
         logoSrc: https://circleci.com/docs/assets/img/logos/logo-wordmark.svg
         navType: slot
-        activeNav: home
-        activeMenu: list
+        activeNav: entities
+        activeMenu: entities
     resources:
       - name: fomr-detail-fields
         type: restful
@@ -118,7 +123,7 @@ pages:
         uri: http://39.105.230.7/mock/5f642d3ba107ca0020321882/example/detail-form
     components:
       - name: form
-        slot: list
+        slot: entities
         statics:
           title: 详情
           btnText: 保存
@@ -132,4 +137,4 @@ pages:
           - data: form-detail
           - fields: fomr-detail-fields
         links:
-          - back: home
+          - back: entities

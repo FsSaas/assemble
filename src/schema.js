@@ -46,17 +46,11 @@ let configSchema = {
       'items': {
         'properties': {
           'name': { 'type': 'string' },
-          'source': {
-            'type': 'object',
-            'properties': {
-              'type': { 'type': 'string' },
-              'uri': { 'type': 'string' },
-              'path': { 'type': 'string' },
-            },
-            'required': ['type', 'uri', 'path']
-          }
+          'type': { 'type': 'string' },
+          'uri': { 'type': 'string' },
+          'path': { 'type': 'string' }
         },
-        'required': ['name', 'source']
+        'required': ['name', 'type', 'uri', 'path']
       }
     },
     'pages': {

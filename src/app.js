@@ -4,7 +4,7 @@ import Page from './components/page';
 import Core from './common/class/core';
 import history from './history';
 import store from './store';
-import getResource from './common/utils/get-resource';
+import getResources from './common/utils/get-resources';
 import schema from './schema';
 import fetch from './common/utils/fetch';
 
@@ -29,10 +29,7 @@ export default class App extends React.Component {
     const makeRequest = async () => {
       await this.core.loadExternals();
       store.components = await this.core.loadComponents();
-      let promises = store.config.resources.map(it => getResource(it));
-      let resources = await Promise.all(promises)
-      let res = {};
-      resources.forEach(it => res[it.name] = it.value);
+      let res = await getResources(store.config.resources);
       this.setState({
         'init': true,
         'resData': res

@@ -35,7 +35,7 @@ export default class Core {
   _loadComponents() {
     return Promise.all(
       this.components.map(it => {
-        let { name, 'source': { type, uri, path } } = it;
+        let { name, type, uri, path } = it;
         if (type == 'uri') {
           return new Promise((resolve, reject) => {
             createScript(uri, () => {

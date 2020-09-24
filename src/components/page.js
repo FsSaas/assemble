@@ -5,7 +5,7 @@ import Cmp from './cmp';
 import Layout from './layout';
 import qs from 'querystring';
 import history from '../history';
-import getResource from '../common/utils/get-resource';
+import getResources from '../common/utils/get-resources';
 import getResFromDeps from '../common/utils/get-resources-from-deps';
 
 export default props => {
@@ -39,13 +39,8 @@ export default props => {
   useEffect(() => {
     const makeResources = async () => {
       if (resources.length) {
-        let promises = resources.map(it => getResource(it));
-        Promise.all(promises)
-          .then(resources => {
-            let res = {};
-            resources.forEach(it => res[it.name] = it.value);
-            setPageResources(res);
-          })
+        let res = await getResources(resources);
+        setPageResources(res);
       }
     }
     makeResources();
