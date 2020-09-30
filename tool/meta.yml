@@ -22,8 +22,8 @@ metadatas:
         uri: https://kms.rainiertrust.com/realm/list
         request:
           format:
-            pageIndex: '{current}'
-            pageSize: '{pageSize}'
+            pageIndex: current
+            pageSize: pageSize
         response:
           format-eval: '(function(res) { return { items: res, total: 100 } })(res)'
 
@@ -76,7 +76,7 @@ components:
     path: '@lnm/login'
   - name: 'datatable'
     type: uri
-    uri: http://oss.onelaas.com/ux/lnm-table/1.1.17/dist/main-1.1.17.min.js
+    uri: http://oss.onelaas.com/ux/lnm-table/1.1.19/dist/main-1.1.19.min.js
     path: '@lnm/table'
   - name: breadcrumb
     type: uri
@@ -118,6 +118,7 @@ pages:
             showBtn: true
             btnText: 新增
             title: Realms
+            pageStart: -1
         metadata-dep: realms
         resource-deps: 
           - dataSource: realms

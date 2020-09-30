@@ -58,7 +58,6 @@ const send = (key, defaultUri, metConfig) => {
     // 通过配置组装请求对象
     let reqBody = data;
     let bodKeys = Object.entries(body);
-
     if (bodKeys.length) {
       let mappedBody = {};
       for (let it of bodKeys) {
@@ -81,10 +80,11 @@ const send = (key, defaultUri, metConfig) => {
       data && data.query && method == 'GET' && // GET请求，并且有参数
       request && request.format // 配置了请求参数格式化
     ) {
+      // Format请求参数
       let formatedQuery = {};
       for (let it of Object.entries(request.format)) {
         let [newKey, staKey] = it;
-        formatedQuery[newKey] = format(staKey, data.query);
+        formatedQuery[newKey] = data.query[staKey];
       }
       uri = uri + '?' + qs.stringify(formatedQuery);
     }
