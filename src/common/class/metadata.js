@@ -1,17 +1,10 @@
 import fetch from '../utils/fetch';
 import format from 'string-template';
+import qs from 'querystring';
 
 const getMethod = (methods, name) => {
   let [method] = methods.filter(it => it.name == name);
   return method;
-}
-
-const resCallback = response => res => {
-  let { type, transform } = response;
-  if (type == 'json') return res.json();
-  if (type == 'text') return res.text();
-  if (type === undefined) return res.json();
-  return res;
 }
 
 const apis = (uri) => ({
@@ -44,13 +37,14 @@ const apis = (uri) => ({
 const send = (key, defaultUri, metConfig) => {
   let api = apis(defaultUri)[key];
   return (data = {}) => {
-    let methodConfig = getMethod(metConfig, key);    
+    let methodConfig = getMethod(metConfig, key);
     let {
       uri,
       method,
       headers = {},
       body = {},
-      response = {}
+      response = {},
+      request = {}
     } = methodConfig || {};
 
     // 默认值处理
@@ -82,14 +76,54 @@ const send = (key, defaultUri, metConfig) => {
       reqOpts['body'] = JSON.stringify(reqBody)
     }
 
-    return fetch(uri, reqOpts).then(
-      resCallback(response)
-    )
+    // 处理GET请求参数
+    if (
+      data && data.query && method == 'GET' && // GET请求，并且有参数
+      request && request.format // 配置了请求参数格式化
+    ) {
+      let formatedQuery = {};
+      for (let it of Object.entries(request.format)) {
+        let [newKey, staKey] = it;
+        formatedQuery[newKey] = format(staKey, data.query);
+      }
+      uri = uri + '?' + qs.stringify(formatedQuery);
+    }
+
+    /**
+     * 构建请求
+     */
+    return fetch(uri, reqOpts)
+
+      // 处理返回接口结构
+      .then(res => {
+        let { type } = response || {};
+        if (type == 'json') return res.json();
+        if (type == 'text') return res.text();
+        if (type === undefined) return res.json();
+        return res;
+      })
+
+      // 处理请求后参数
+      .then(res => {
+        let { format, 'format-eval': formatEval } = response || {};
+        if (formatEval) {
+
+          console.warn('不建议使用 format-eval 属性配置格式化参数，可通过数据接口或者自己定义组件解决');
+          let newRes = eval(response['format-eval']); // eval 里会用到 res 参数
+          return newRes;
+        } else if (format) {
+
+          // eval 里会用到 res 参数
+          return res;
+        } else {
+
+          return res;
+        }
+      })
   }
 }
 
 export default class {
-
   constructor(resource) {
     let { name, type, uri, fields, methods } = resource || {};
     this.methods = methods;
@@ -101,29 +135,24 @@ export default class {
 
   list(data) {
     let { uri, methods } = this;
-    return send('list', uri, methods)(data);
+    return send('list', uri, methods)({ 'query': data });
   }
-
   new(data) {
     let { uri, methods } = this;
-    return send('new', uri, methods)(data);
+    return send('new', uri, methods)({ 'body': data });
   }
-
   update(data) {
     let { uri, methods } = this;
-    return send('update', uri, methods)(data);
+    return send('update', uri, methods)({ 'body': data });
   }
-
   delete(data) {
     let { uri, methods } = this;
-    return send('delete', uri, methods)(data);
+    return send('delete', uri, methods)({ 'body': data });
   }
-
   columns() {
     let { uri, methods } = this;
     return send('columns', uri, methods)();
   }
-
   fields() {
     let { uri, methods } = this;
     return send('fields', uri, methods)();
