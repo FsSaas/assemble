@@ -24,5 +24,10 @@ export default links => {
     history.push(path);
   }
 
+  // 添加通用api
+  linkInstances['goBack'] = () => {
+    history.goBack();
+  }
+
   return linkInstances;
 }

@@ -4,6 +4,7 @@ import packLinks from '../common/utils/pack-links';
 import history from '../history';
 import qs from 'querystring';
 import getResFromDeps from '../common/utils/get-resources-from-deps';
+import { getMetadata } from '../store';
 
 export default props => {
   let {
@@ -13,6 +14,7 @@ export default props => {
     statics = {},
     'resource-deps': resourceDeps = [], // 子组件依赖的数据源
     'query-deps': queryDeps = [],
+    'metadata-dep': metadataDepName,
     pageResources = {}
   } = props;
 
@@ -32,6 +34,7 @@ export default props => {
     queryDeps.forEach(it => {
       if (typeof it == 'object') {
         let [key] = Object.keys(it);
+        debugger
         params[key] = queryParams[it[key]];
       } else if (typeof it == 'string') {
         params[it] = queryParams[it];
@@ -42,6 +45,12 @@ export default props => {
   // 依赖页面上的Resources数据
   let depsData = getResFromDeps(resourceDeps, pageResources);
 
+  // 数据源依赖
+  let depMeta = {};
+  if (metadataDepName) {
+    depMeta['metadata'] = getMetadata(metadataDepName);
+  }
+
   return <ElementComponent
     key={name}
     slot={slot}
@@ -49,5 +58,6 @@ export default props => {
     {...statics}
     {...params}
     {...depsData}
+    {...depMeta}
   />
 }

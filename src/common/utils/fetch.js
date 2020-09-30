@@ -18,7 +18,7 @@ export default (uri, opts = {}) => {
 
   return fetch(uri, opts)
     .catch(err => {
-      if (e.status === 401) {
+      if (err.status === 401) {
         let { authorization } = getConfig();
         if (!authorization) throw err;
         let { 'un-auth': unauth = {} } = authorization;
