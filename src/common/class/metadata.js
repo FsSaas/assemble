@@ -1,43 +1,76 @@
 import fetch from '../utils/fetch';
 import format from 'string-template';
-import qs from 'querystring';
+import queryString from 'query-string';
 
 const getMethod = (methods, name) => {
   let [method] = methods.filter(it => it.name == name);
   return method;
 }
 
-const apis = (uri) => ({
-  'delete': {
-    'method': 'DELETE',
-    'uri': `${uri}/{id}`,
-  },
-  'update': {
-    'method': 'PUT',
-    'uri': `${uri}/{id}`
-  },
-  'new': {
-    'method': 'POST',
-    uri
-  },
-  'list': {
-    'method': 'GET',
-    uri
-  },
-  'columns': {
-    'method': 'GET',
-    'uri': `${uri}/columns`,
-  },
-  'fields': {
-    'method': 'GET',
-    'uri': `${uri}/fields`,
-  }
-});
+export default class {
+  constructor(resource) {
+    let { name, type, uri, fields, methods } = resource || {};
 
-const send = (key, defaultUri, metConfig) => {
-  let api = apis(defaultUri)[key];
-  return (data = {}) => {
-    let methodConfig = getMethod(metConfig, key);
+    this.methods = methods;
+    this.type = type;
+    this.name = name;
+    this.uri = uri;
+    this._fields = [];
+
+    /**
+     * 处理请求对象的字段
+     */
+    fields.forEach(it => {
+      if (typeof it == 'string') {
+        this._fields.push({ 'name': it });
+      } else if (typeof it == 'object') {
+        this._fields.push(it);
+      }
+    });
+
+    // 获取Field字段的值
+    this._fields.forEach(it => {
+      if (it.from) {
+        if (it.from == 'url-query') {
+          let hashQuery = (location.hash || '').replace(/^.+?\?/, '');
+          let query = queryString.parse(hashQuery);
+          it.value = query[it.name];
+        }
+      } else {
+        it.from = 'data'; // 初始化数据，从Data中
+      }
+    });
+
+    methods.forEach(it => {
+      let { name } = it;
+      this[name] = data => {
+        return this.send(name, data);
+      }
+    })
+  }
+
+  /**
+   * 通过配置Fields初始化数据
+   * @param {事件传递的参数} data 
+   */
+  getFields(data) {
+    let envFields = [];
+    this._fields.forEach(it => {
+      if (it.from == 'data') {
+        envFields.push({
+          'name': it.name,
+          'value': data[it.name]
+        });
+      } else {
+        envFields.push(it);
+      }
+    });
+    return envFields;
+  }
+
+  send(key, data = {}) {
+    let envVars = this.getFields(data);
+    let methodConfig = getMethod(this.methods, key);
     let {
       uri,
       method,
@@ -48,11 +81,13 @@ const send = (key, defaultUri, metConfig) => {
     } = methodConfig || {};
 
     // 默认值处理
-    uri = uri || api.uri;
-    method = method || api.method;
+    uri = uri || this.uri;
+    method = method || 'GET';
 
     // 解析RUI中的占位符，替换为真实字符串
-    uri = format(uri, data);
+    let vars = {};
+    envVars.forEach(it => vars[it.name] = it.value);
+    uri = format(uri, vars);
 
     // 解析请求实体
     // 通过配置组装请求对象
@@ -77,16 +112,16 @@ const send = (key, defaultUri, metConfig) => {
 
     // 处理GET请求参数
     if (
-      data && data.query && method == 'GET' && // GET请求，并且有参数
+      data && method == 'GET' && // GET请求，并且有参数
       request && request.format // 配置了请求参数格式化
     ) {
       // Format请求参数
       let formatedQuery = {};
       for (let it of Object.entries(request.format)) {
         let [newKey, staKey] = it;
-        formatedQuery[newKey] = data.query[staKey];
+        formatedQuery[newKey] = data[staKey];
       }
-      uri = uri + '?' + qs.stringify(formatedQuery);
+      uri = uri + '?' + queryString.stringify(formatedQuery);
     }
 
     /**
@@ -120,41 +155,5 @@ const send = (key, defaultUri, metConfig) => {
           return res;
         }
       })
-  }
-}
-
-export default class {
-  constructor(resource) {
-    let { name, type, uri, fields, methods } = resource || {};
-    this.methods = methods;
-    // this.fields = fields;
-    this.type = type;
-    this.name = name;
-    this.uri = uri;
-  }
-
-  list(data) {
-    let { uri, methods } = this;
-    return send('list', uri, methods)({ 'query': data });
-  }
-  new(data) {
-    let { uri, methods } = this;
-    return send('new', uri, methods)({ 'body': data });
-  }
-  update(data) {
-    let { uri, methods } = this;
-    return send('update', uri, methods)({ 'body': data });
-  }
-  delete(data) {
-    let { uri, methods } = this;
-    return send('delete', uri, methods)({ 'body': data });
-  }
-  columns() {
-    let { uri, methods } = this;
-    return send('columns', uri, methods)();
-  }
-  fields() {
-    let { uri, methods } = this;
-    return send('fields', uri, methods)();
   }
 }

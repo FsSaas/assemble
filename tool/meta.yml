@@ -7,19 +7,52 @@ metadatas:
     fields:
       - id
       - name
-      - nameCN
-      - description
+      - status
+      - secret
     methods:
       - name: new
         uri: https://kms.rainiertrust.com/realm
         headers:
           Content-Type: application/json
+      - name: update
+        uri: https://kms.rainiertrust.com/realm/{id}
+        method: PUT
+        request:
+          body:
+            name: name
+            status: status
       - name: fields
         uri: http://easymock.onelaas.com/mock/5f6dd029fca2eb0020116ac0/realms/fields
       - name: columns
         uri: http://easymock.onelaas.com/mock/5f6dd029fca2eb0020116ac0/realms/columns
+      - name: findOne
+        uri: https://kms.rainiertrust.com/realm/{id}
       - name: list
         uri: https://kms.rainiertrust.com/realm/list
+        request:
+          format:
+            pageIndex: current
+            pageSize: pageSize
+        response:
+          format-eval: '(function(res) { return { items: res, total: 100 } })(res)'
+
+  - name: realms-entities
+    type: restful
+    uri: https://kms.rainiertrust.com/realm/{id}/entities
+    fields:
+      - id
+      - name
+      - type
+      - status
+      - name: realmId
+        from: url-query
+    methods:
+      - name: fields
+        uri: http://easymock.onelaas.com/mock/5f6dd029fca2eb0020116ac0/entities/fields
+      - name: columns
+        uri: http://easymock.onelaas.com/mock/5f6dd029fca2eb0020116ac0/entities/columns
+      - name: list
+        uri: https://kms.rainiertrust.com/realm/{realmId}/entities/list
         request:
           format:
             pageIndex: current
@@ -76,7 +109,7 @@ components:
     path: '@lnm/login'
   - name: 'datatable'
     type: uri
-    uri: http://oss.onelaas.com/ux/lnm-table/1.1.19/dist/main-1.1.19.min.js
+    uri: http://oss.onelaas.com/ux/lnm-table/1.2.0/dist/main-1.2.0.min.js
     path: '@lnm/table'
   - name: breadcrumb
     type: uri
@@ -114,15 +147,13 @@ pages:
         slot: realms
         statics:
           size: small
+          pageStart: -1
+          detailParamKey: realmId
           header:
             showBtn: true
             btnText: 新增
             title: Realms
-            pageStart: -1
         metadata-dep: realms
-        resource-deps: 
-          - dataSource: realms
-          - columns: realmsFields
         links:
           - detail: realms-entities
 
@@ -165,21 +196,12 @@ pages:
       - name: datatable
         slot: realms-entities
         statics:
-          meta:
-            uri: http://easymock.onelaas.com/mock/5f6dd029fca2eb0020116ac0/entities
-            add: http://easymock.onelaas.com/mock/5f6dd029fca2eb0020116ac0/entities
-            update: http://easymock.onelaas.com/mock/5f6dd029fca2eb0020116ac0/entities
-            delete: http://easymock.onelaas.com/mock/5f6dd029fca2eb0020116ac0/entities
-            columns: http://easymock.onelaas.com/mock/5f6dd029fca2eb0020116ac0/entities/columns
-            fields: http://easymock.onelaas.com/mock/5f6dd029fca2eb0020116ac0/entities/fields
           size: small
           header:
             showBtn: true
             btnText: 新增
             title: Entities
-        resource-deps: 
-          - dataSource: table-data
-          - columns: table-columns
+        metadata-dep: realms-entities 
         links:
           - detail: keys
 
