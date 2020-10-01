@@ -4,7 +4,8 @@ import packLinks from '../common/utils/pack-links';
 import history from '../history';
 import qs from 'querystring';
 import getResFromDeps from '../common/utils/get-resources-from-deps';
-import { getMetadata } from '../store';
+import store from '../store';
+import Metadata from '../common/class/metadata';
 
 export default props => {
   let {
@@ -45,10 +46,15 @@ export default props => {
   // 依赖页面上的Resources数据
   let depsData = getResFromDeps(resourceDeps, pageResources);
 
-  // 数据源依赖
+  /**
+   * 数据源依赖
+   * 处理METADATE
+  */
   let depMeta = {};
   if (metadataDepName) {
-    depMeta['metadata'] = getMetadata(metadataDepName);
+    let { metadatas } = store.config;
+    let [metaConf] = metadatas.filter(it => it.name == metadataDepName);
+    depMeta['metadata'] = new Metadata(metaConf);
   }
 
   return <ElementComponent

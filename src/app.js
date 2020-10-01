@@ -31,12 +31,6 @@ export default class App extends React.Component {
       await this.core.loadExternals();
       store.components = await this.core.loadComponents();
       let res = await getResources(store.config.resources);
-      // 处理METADATE
-      let { metadatas } = store.config;
-      metadatas.forEach(it => {
-        let meta = new Metadata(it);
-        store.metadatas[meta.name] = meta;
-      });
       this.setState({
         'init': true,
         'resData': res

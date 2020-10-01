@@ -34,7 +34,7 @@ export default class {
         if (it.from == 'url-query') {
           let hashQuery = (location.hash || '').replace(/^.+?\?/, '');
           let query = queryString.parse(hashQuery);
-          it.value = query[it.name];
+          it.value = query[it.key || it.name];
         }
       } else {
         it.from = 'data'; // 初始化数据，从Data中
@@ -70,6 +70,7 @@ export default class {
 
   send(key, data = {}) {
     let envVars = this.getFields(data);
+    console.log(envVars, 'envVars')
     let methodConfig = getMethod(this.methods, key);
     let {
       uri,

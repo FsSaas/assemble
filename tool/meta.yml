@@ -46,6 +46,7 @@ metadatas:
       - status
       - name: realmId
         from: url-query
+        key: id
     methods:
       - name: fields
         uri: http://easymock.onelaas.com/mock/5f6dd029fca2eb0020116ac0/entities/fields
@@ -58,7 +59,57 @@ metadatas:
             pageIndex: current
             pageSize: pageSize
         response:
-          format-eval: '(function(res) { return { items: res, total: 100 } })(res)'
+          format-eval: '(function(res) { return { items: res, total: 0 } })(res)'
+
+  - name: realms-keys
+    type: restful
+    uri: https://kms.rainiertrust.com/realm/{realmId}/secrets/key/list
+    fields:
+      - id
+      - name
+      - type
+      - status
+      - name: realmId
+        from: url-query
+        key: id
+    methods:
+      - name: fields
+        uri: http://easymock.onelaas.com/mock/5f6dd029fca2eb0020116ac0/keys/fields
+      - name: columns
+        uri: http://easymock.onelaas.com/mock/5f6dd029fca2eb0020116ac0/keys/columns
+      - name: list
+        uri: https://kms.rainiertrust.com/realm/{realmId}/secrets/key/list
+        request:
+          format:
+            pageIndex: current
+            pageSize: pageSize
+        response:
+          format-eval: '(function(res) { return { items: res.map(function(it) { return Object.assign({}, it, it.config) }), total: 10 } })(res)'
+
+  - name: entities-keys
+    type: restful
+    uri: https://kms.rainiertrust.com/realm/{realmId}/secrets/key/list
+    fields:
+      - id
+      - name
+      - type
+      - status
+      - name: realmId
+        from: url-query
+        key: id
+    methods:
+      - name: fields
+        uri: http://easymock.onelaas.com/mock/5f6dd029fca2eb0020116ac0/keys/fields
+      - name: columns
+        uri: http://easymock.onelaas.com/mock/5f6dd029fca2eb0020116ac0/keys/columns
+      - name: list
+        uri: https://kms.rainiertrust.com/realm/{realmId}/secrets/key/list
+        request:
+          format:
+            pageIndex: current
+            pageSize: pageSize
+        response:
+          format-eval: '(function(res) { return { items: res.map(function(it) { return Object.assign({}, it, it.config) }), total: 10 } })(res)'
 
 resources:
   - name: table-data
@@ -97,7 +148,7 @@ externals:
 components:
   - name: nav-layout
     type: uri
-    uri: http://oss.onelaas.com/ux/lnm-nav-layout/1.1.2/dist/main-1.1.2.min.js
+    uri: http://oss.onelaas.com/ux/lnm-nav-layout/1.1.3/dist/main-1.1.3.min.js
     path: '@lnm/nav-layout'
   - name: form
     type: uri
@@ -109,7 +160,7 @@ components:
     path: '@lnm/login'
   - name: 'datatable'
     type: uri
-    uri: http://oss.onelaas.com/ux/lnm-table/1.2.0/dist/main-1.2.0.min.js
+    uri: http://oss.onelaas.com/ux/lnm-table/1.2.1/dist/main-1.2.1.min.js
     path: '@lnm/table'
   - name: breadcrumb
     type: uri
@@ -148,7 +199,6 @@ pages:
         statics:
           size: small
           pageStart: -1
-          detailParamKey: realmId
           header:
             showBtn: true
             btnText: 新增
@@ -166,6 +216,7 @@ pages:
         navType: slot
         activeNav: access
         activeMenu: realms-entities
+        attachQueries: true
         contentBox:
           padding: '18px 24px'
         nav:
@@ -197,6 +248,7 @@ pages:
         slot: realms-entities
         statics:
           size: small
+          pageStart: -1
           header:
             showBtn: true
             btnText: 新增
@@ -214,6 +266,7 @@ pages:
         navType: slot
         activeNav: access
         activeMenu: realms-keys
+        attachQueries: true
         contentBox:
           padding: '18px 24px'
         nav:
@@ -244,21 +297,13 @@ pages:
       - name: datatable
         slot: realms-keys
         statics:
-          meta:
-            uri: http://easymock.onelaas.com/mock/5f6dd029fca2eb0020116ac0/keys
-            add: http://easymock.onelaas.com/mock/5f6dd029fca2eb0020116ac0/keys
-            update: http://easymock.onelaas.com/mock/5f6dd029fca2eb0020116ac0/keys
-            delete: http://easymock.onelaas.com/mock/5f6dd029fca2eb0020116ac0/keys
-            columns: http://easymock.onelaas.com/mock/5f6dd029fca2eb0020116ac0/keys/columns
-            fields: http://easymock.onelaas.com/mock/5f6dd029fca2eb0020116ac0/keys/fields
           size: small
+          pageStart: -1
           header:
             showBtn: true
             btnText: 新增
             title: Keys
-        resource-deps: 
-          - dataSource: table-data
-          - columns: table-columns
+        metadata-dep: realms-keys
         links:
           - detail: keys-detail
 
