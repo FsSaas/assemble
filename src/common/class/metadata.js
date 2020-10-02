@@ -1,6 +1,6 @@
 import fetch from '../utils/fetch';
 import format from 'string-template';
-import queryString from 'query-string';
+import qs from 'qs';
 
 const getMethod = (methods, name) => {
   let [method] = methods.filter(it => it.name == name);
@@ -8,9 +8,9 @@ const getMethod = (methods, name) => {
 }
 
 export default class {
+
   constructor(resource) {
     let { name, type, uri, fields, methods } = resource || {};
-
     this.methods = methods;
     this.type = type;
     this.name = name;
@@ -30,17 +30,33 @@ export default class {
 
     // 获取Field字段的值
     this._fields.forEach(it => {
-      if (it.from) {
-        if (it.from == 'url-query') {
+      let { type = 'data' } = it;
+      switch (type) {
+        case 'query':
           let hashQuery = (location.hash || '').replace(/^.+?\?/, '');
-          let query = queryString.parse(hashQuery);
+          let query = qs.parse(hashQuery);
           it.value = query[it.key || it.name];
-        }
-      } else {
-        it.from = 'data'; // 初始化数据，从Data中
+          break;
+        case 'static':
+          // it.value
+          break;
+        case 'local':
+          it.value = localStorage.getItem(it.key);
+          break;
+        case 'session':
+          it.value = sessionStorage.getItem(it.key);
+          break;
+        case 'data':
+          // 初始化数据，从Data中
+          it.type = 'data';
+          break;
+        default: break;
       }
     });
 
+    /**
+     * 根据配置创建组件调用事件句柄
+     */
     methods.forEach(it => {
       let { name } = it;
       this[name] = data => {
@@ -57,10 +73,7 @@ export default class {
     let envFields = [];
     this._fields.forEach(it => {
       if (it.from == 'data') {
-        envFields.push({
-          'name': it.name,
-          'value': data[it.name]
-        });
+        envFields.push({ 'name': it.name, 'value': data[it.name] });
       } else {
         envFields.push(it);
       }
@@ -68,18 +81,20 @@ export default class {
     return envFields;
   }
 
-  send(key, data = {}) {
+  /**
+   * 单个请求
+   * @param {*} config 
+   */
+  peerSend(config, data) {
     let envVars = this.getFields(data);
-    console.log(envVars, 'envVars')
-    let methodConfig = getMethod(this.methods, key);
     let {
       uri,
       method,
       headers = {},
       body = {},
       response = {},
-      request = {}
-    } = methodConfig || {};
+      request = {},
+    } = config;
 
     // 默认值处理
     uri = uri || this.uri;
@@ -122,14 +137,13 @@ export default class {
         let [newKey, staKey] = it;
         formatedQuery[newKey] = data[staKey];
       }
-      uri = uri + '?' + queryString.stringify(formatedQuery);
+      uri = uri + '?' + qs.stringify(formatedQuery);
     }
 
     /**
      * 构建请求
      */
     return fetch(uri, reqOpts)
-
       // 处理返回接口结构
       .then(res => {
         let { type } = response || {};
@@ -138,23 +152,41 @@ export default class {
         if (type === undefined) return res.json();
         return res;
       })
-
       // 处理请求后参数
       .then(res => {
         let { format, 'format-eval': formatEval } = response || {};
         if (formatEval) {
-
           console.warn('不建议使用 format-eval 属性配置格式化参数，可通过数据接口或者自己定义组件解决');
           let newRes = eval(response['format-eval']); // eval 里会用到 res 参数
           return newRes;
         } else if (format) {
-
           // eval 里会用到 res 参数
           return res;
         } else {
-
           return res;
         }
       })
+      .catch(err => {
+        console.error(err);
+      })
+  }
+
+  send(key, data = {}) {
+    let methodConfig = getMethod(this.methods, key);
+    let {
+      patch,
+      ...restReqConfig
+    } = methodConfig || {};
+
+    /**
+     * 处理多个请求返回接口
+     */
+    if (!patch) patch = [restReqConfig];
+    return Promise.all(
+      patch.map(conf => this.peerSend(conf, data))
+    ).then(res => {
+      if (patch.length == 1) return res[0];
+      return res;
+    });
   }
 }

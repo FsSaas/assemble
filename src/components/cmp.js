@@ -35,7 +35,6 @@ export default props => {
     queryDeps.forEach(it => {
       if (typeof it == 'object') {
         let [key] = Object.keys(it);
-        debugger
         params[key] = queryParams[it[key]];
       } else if (typeof it == 'string') {
         params[it] = queryParams[it];
