@@ -72,7 +72,7 @@ export default class {
   getFields(data) {
     let envFields = [];
     this._fields.forEach(it => {
-      if (it.from == 'data') {
+      if (it.type == 'data') {
         envFields.push({ 'name': it.name, 'value': data[it.name] });
       } else {
         envFields.push(it);

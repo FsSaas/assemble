@@ -114,8 +114,8 @@ metadatas:
         type: query
         key: realmId
       - name: entityType
-        type: static
-        value: app
+        type: query
+        key: type
       - name: entityId
         type: query
         key: entityId
@@ -158,9 +158,9 @@ authorization:
   auth-pages:
     - home
     - detail
-    - keys
     - realms-entities
     - realms
+    - entities-keys
     - realms-keys
     - keys-detail
   un-auth:
@@ -187,7 +187,7 @@ components:
     path: '@lnm/login'
   - name: 'datatable'
     type: uri
-    uri: http://oss.onelaas.com/ux/lnm-table/1.2.2/dist/main-1.2.2.min.js
+    uri: http://oss.onelaas.com/ux/lnm-table/1.2.4/dist/main-1.2.4.min.js
     path: '@lnm/table'
   - name: breadcrumb
     type: uri
@@ -201,7 +201,7 @@ components:
 pages:
   - name: login
     path: /
-    layout: 
+    layout:
       name: login-layout
     components:
       - name: login
@@ -263,9 +263,6 @@ pages:
               - key: realms-keys
                 label: Keys
                 path: /realms-keys
-    resource-deps:
-      - table-data
-      - table-columns
     components:
       - name: breadcrumb
         slot: realms-entities
@@ -284,13 +281,15 @@ pages:
           pageStart: -1
           detailParamKey: entityId
           attachQueries: true
+          goWithFields:
+            - type
           header:
             showBtn: true
             btnText: 新增
             title: Entities
         metadata-dep: realms-entities
         links:
-          - detail: keys
+          - detail: entities-keys
 
   - name: realms-keys
     path: /realms-keys
@@ -315,9 +314,6 @@ pages:
               - key: realms-keys
                 label: Keys
                 path: /realms-keys
-    resource-deps:
-      - table-data
-      - table-columns
     components:
       - name: breadcrumb
         slot: realms-keys
@@ -343,8 +339,8 @@ pages:
         links:
           - detail: keys-detail
 
-  - name: keys
-    path: /keys
+  - name: entities-keys
+    path: /entities-keys
     layout:
       name: nav-layout
       statics:
@@ -359,9 +355,6 @@ pages:
           - key: access
             label: Access
             path: /realms
-    resource-deps:
-      - table-data
-      - table-columns
     components:
       - name: breadcrumb
         slot: keys
