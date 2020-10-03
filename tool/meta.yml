@@ -35,7 +35,7 @@ metadatas:
             pageIndex: current
             pageSize: pageSize
         response:
-          format-eval: '(function(res) { return { items: res, total: 100 } })(res)'
+          format-eval: '(function(res) { return { items: res.values, total: res.total } })(res)'
 
   - name: realms-entities
     type: restful
@@ -68,7 +68,7 @@ metadatas:
             pageIndex: current
             pageSize: pageSize
         response:
-          format-eval: '(function(res) { return { items: res, total: 0 } })(res)'
+          format-eval: '(function(res) { return { items: res.values, total: res.total } })(res)'
 
   - name: realms-keys
     type: restful
@@ -115,7 +115,7 @@ metadatas:
         key: realmId
       - name: entityType
         type: static
-        value: Active
+        value: app
       - name: entityId
         type: query
         key: entityId
@@ -125,7 +125,7 @@ metadatas:
       - name: columns
         uri: http://easymock.onelaas.com/mock/5f6dd029fca2eb0020116ac0/keys/columns
       - name: list
-        uri: https://kms.rainiertrust.com/realm/{realmId}/entities/{entityType}/{entityId}/secrets/key
+        uri: https://kms.rainiertrust.com/realm/{realmId}/entities/{entityType}/{entityId}/secrets/key/list
         request:
           format:
             pageIndex: current
@@ -158,6 +158,11 @@ authorization:
   auth-pages:
     - home
     - detail
+    - keys
+    - realms-entities
+    - realms
+    - realms-keys
+    - keys-detail
   un-auth:
     redirect: login
 
@@ -178,7 +183,7 @@ components:
     path: '@lnm/form'
   - name: login
     type: uri
-    uri: http://oss.onelaas.com/ux/lnm-login/1.0.9/dist/main-1.0.9.min.js
+    uri: http://oss.onelaas.com/ux/lnm-login/1.1.3/dist/main-1.1.3.min.js
     path: '@lnm/login'
   - name: 'datatable'
     type: uri
@@ -188,16 +193,22 @@ components:
     type: uri
     uri: http://oss.onelaas.com/ux/lnm-breadcrumb/1.0.2/dist/main-1.0.2.min.js
     path: '@lnm/breadcrumb'
+  - name: login-layout
+    type: uri
+    uri: http://oss.onelaas.com/ux/lnm-login-layout/1.0.2/dist/main-1.0.2.min.js
+    path: '@lnm/login-layout'
 
 pages:
   - name: login
     path: /
+    layout: 
+      name: login-layout
     components:
       - name: login
         slot: content
         statics:
           signinUri: http://39.105.230.7/mock/5f642d3ba107ca0020321882/example/signin
-          accessToken: ACCESSTOKEN
+          access: signature
         links:
           - home: realms
 
