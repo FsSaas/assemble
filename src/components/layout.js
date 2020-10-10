@@ -22,7 +22,7 @@ export default props => {
     { 'links': linkObjs }
   );
 
-return <>
+  return <>
     <LayoutComponent {...layoutProps}>
       {props.children}
     </LayoutComponent>

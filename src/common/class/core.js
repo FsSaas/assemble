@@ -14,7 +14,6 @@ export default class Core {
   loadComponents() {
     return this._loadComponents()
   }
-
   loadExternals() {
     return this._loadExternals()
   }

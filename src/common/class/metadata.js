@@ -1,22 +1,16 @@
-import fetch from '../utils/fetch';
 import format from 'string-template';
 import qs from 'qs';
 
-const getMethod = (methods, name) => {
-  let [method] = methods.filter(it => it.name == name);
-  return method;
-}
-
 export default class {
-
   constructor(resource) {
-    let { name, type, uri, fields, methods } = resource || {};
-    this.methods = methods;
-    this.type = type;
-    this.name = name;
+    let { uri, fields, actions } = resource || {};
+    this.actions = actions;
     this.uri = uri;
     this._fields = [];
-
+    // 记录原参数
+    this.resource = resource;
+    let self = this;
+  
     /**
      * 处理请求对象的字段
      */
@@ -57,9 +51,9 @@ export default class {
     /**
      * 根据配置创建组件调用事件句柄
      */
-    methods.forEach(it => {
-      let { name } = it;
-      this[name] = data => {
+    actions.forEach(it => {
+      let { name, } = it;
+      self[name] = data => {
         return this.send(name, data);
       }
     })
@@ -85,7 +79,7 @@ export default class {
    * 单个请求
    * @param {*} config 
    */
-  peerSend(config, data) {
+  peerSend(config, data, key) {
     let envVars = this.getFields(data);
     let {
       uri,
@@ -172,20 +166,18 @@ export default class {
   }
 
   send(key, data = {}) {
-    let methodConfig = getMethod(this.methods, key);
+    let [methodConfig] = this.actions.filter(it => it.name == key);
     let {
-      patch,
-      ...restReqConfig
+      patchs,
     } = methodConfig || {};
-
+    debugger
     /**
      * 处理多个请求返回接口
      */
-    if (!patch) patch = [restReqConfig];
     return Promise.all(
-      patch.map(conf => this.peerSend(conf, data))
+      patchs.map(conf => this.peerSend(conf, data, key))
     ).then(res => {
-      if (patch.length == 1) return res[0];
+      if (patchs.length == 1) return res[0];
       return res;
     });
   }

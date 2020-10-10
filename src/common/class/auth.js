@@ -8,7 +8,12 @@ export default name => {
   if (!authorization) {
     return { 'access': true };
   }
-  let { 'access-token': accessToken, type, 'un-auth': unauth = {}, 'auth-pages': authPages } = authorization;
+  let {
+    'access-token': accessToken,
+    type,
+    'un-auth': unauth = {},
+    'auth-pages': authPages = []
+  } = authorization;
   if (!authPages.includes(name)) {
     return { 'access': true };
   }

@@ -85,7 +85,7 @@ let configSchema = {
       }
     },
   },
-  'required': ['resources', 'components', 'pages']
+  'required': ['components', 'pages']
 };
 
 export default config => {
