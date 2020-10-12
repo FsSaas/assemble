@@ -53,7 +53,8 @@ export default props => {
   if (metadataDepName) {
     let { metadatas } = store.config;
     let [metaConf] = metadatas.filter(it => it.name == metadataDepName);
-    depMeta['metadata'] = new Metadata(metaConf);
+    if (metaConf)
+      depMeta['metadata'] = new Metadata(metaConf);
   }
 
   return <ElementComponent

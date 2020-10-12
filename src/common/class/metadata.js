@@ -170,7 +170,6 @@ export default class {
     let {
       patchs,
     } = methodConfig || {};
-    debugger
     /**
      * 处理多个请求返回接口
      */

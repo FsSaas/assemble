@@ -7,7 +7,6 @@ import store from './store';
 import getResources from './common/utils/get-resources';
 import schema from './schema';
 import fetch from './common/utils/fetch';
-import Metadata from './common/class/metadata';
 
 // 用于统一处理权限验证
 window.fetch = fetch;
@@ -28,6 +27,7 @@ export default class App extends React.Component {
 
   componentDidMount() {
     const makeRequest = async () => {
+      // 加载组件
       await this.core.loadExternals();
       store.components = await this.core.loadComponents();
       let res = await getResources(store.config.resources);
@@ -35,6 +35,14 @@ export default class App extends React.Component {
         'init': true,
         'resData': res
       });
+      /**
+       * 如果只有一个页面，则默认跳转当前页面
+       */
+      let { pages = [] } = store.config;
+      if (pages.length == 1) {
+        let page = pages[0];
+        history.push(page.path);
+      }
     }
     makeRequest();
   }
@@ -42,6 +50,7 @@ export default class App extends React.Component {
   render() {
     let { init, resData } = this.state;
     let { pages = [] } = store.config;
+
     return <>
       { init ? <Router history={history}>
         <Switch>
