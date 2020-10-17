@@ -10,7 +10,7 @@ export default class {
     // 记录原参数
     this.resource = resource;
     let self = this;
-  
+
     /**
      * 处理请求对象的字段
      */
@@ -29,7 +29,7 @@ export default class {
         case 'query':
           let hashQuery = (location.hash || '').replace(/^.+?\?/, '');
           let query = qs.parse(hashQuery);
-          it.value = query[it.key || it.name];
+          it.value = query[it.value];
           break;
         case 'static':
           // it.value
@@ -76,6 +76,28 @@ export default class {
   }
 
   /**
+   * 通过用户配置的key返回需要的值
+   * uri template
+   * body
+   * @param {*} it 
+   * @param {*} data 
+   */
+  getDataFromData(it, data) {
+    let res = {};
+    let { name, type, value } = it;
+    // query 在 url query 中取值
+    if (type == 'query') {
+      let [field] = this._fields.filter(it => it.name = name);
+      res[name] = field.value;
+    }
+    // arguments 在 api 参数中取值
+    else if (type == 'arguments') {
+      res[name] = data[value];
+    }
+    return res;
+  }
+
+  /**
    * 单个请求
    * @param {*} config 
    */
@@ -85,7 +107,7 @@ export default class {
       uri,
       method,
       headers = {},
-      body = {},
+      body = [],
       response = {},
       request = {},
     } = config;
@@ -96,19 +118,21 @@ export default class {
 
     // 解析RUI中的占位符，替换为真实字符串
     let vars = {};
-    envVars.forEach(it => vars[it.name] = it.value);
+    envVars.forEach(it => {
+      let keyData = this.getDataFromData(it, data);
+      Object.assign(vars, keyData);
+    });
     uri = format(uri, vars);
 
     // 解析请求实体
     // 通过配置组装请求对象
     let reqBody = data;
-    let bodKeys = Object.entries(body);
-    if (bodKeys.length) {
+    if (body.length) {
       let mappedBody = {};
-      for (let it of bodKeys) {
-        let [key, value] = it;
-        mappedBody[key] = data[value];
-      }
+      body.forEach(it => {
+        let keyData = this.getDataFromData(it, data);
+        Object.assign(mappedBody, keyData);
+      })
       reqBody = mappedBody;
     }
 
@@ -117,7 +141,12 @@ export default class {
     if (method == 'GET' || method == 'HEAD') {
       // Fetch GET/HEAD do not have 'body'
     } else {
-      reqOpts['body'] = JSON.stringify(reqBody)
+      // 处理 FormData 格式
+      if ((headers['Content-Type'] || '').match(/x-www-form-urlencoded/)) {
+        reqOpts['body'] = new URLSearchParams(qs.stringify(reqBody));
+      } else {
+        reqOpts['body'] = JSON.stringify(reqBody);
+      }
     }
 
     // 处理GET请求参数

@@ -25,8 +25,7 @@ let configSchema = {
           'type': 'object',
           'properties': {
             'redirect': { 'type': 'string' }
-          },
-          'required': ['redirect']
+          }
         },
         'required': ['type', 'un-auth']
       }

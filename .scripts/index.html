@@ -5,165 +5,84 @@
   <meta charset="utf-8">
   <script>
     window.app = {
-  "metadatas": [
-    {
-      "name": "1bab0b35-3642-47b7-a7ad-c403d87e50b1",
-      "type": "restful",
-      "fields": [
+      "metadatas": [
         {
-          "name": "type",
-          "type": "arguments",
-          "value": "type"
-        },
-        {
-          "name": "status",
-          "type": "arguments",
-          "value": "status"
-        },
-        {
-          "name": "id",
-          "type": "arguments",
-          "value": "id"
+          "name": "163bf803-8883-457f-8ec7-a1a0c5c1dc35",
+          "type": "restful",
+          "fields": [],
+          "actions": [
+            {
+              "name": "signin",
+              "patchs": [
+                {
+                  "id": "9eeeed89-fb14-4fa2-9438-f7929bc38158",
+                  "method": "POST",
+                  "uri": "https://kms.rainiertrust.com/authorize/token",
+                  "headers": {
+                    "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
+                  }
+                }
+              ]
+            }
+          ]
         }
       ],
-      "actions": [
+      "components": [
         {
-          "name": "list",
-          "patchs": [
-            {
-              "id": "d27d1515-59c7-473b-9f0b-a2e5c5550c5f",
-              "uri": "http://easymock.onelaas.com/mock/5f6dd029fca2eb0020116ac0/realms",
-              "method": "GET",
-              "response": {
-                "format-eval": "(function(res) { return { 'items': res, 'total': res.length } })(res)"
-              }
-            }
-          ]
+          "name": "@lnm/login-layout",
+          "type": "uri",
+          "uri": "http://oss.onelaas.com/ux/lnm-login-layout/1.0.4/dist/main-1.0.4.min.js",
+          "path": "@lnm/login-layout"
         },
         {
-          "name": "columns",
-          "patchs": [
-            {
-              "id": "6449a604-00cc-4ac2-85d4-1a1a8934f243",
-              "uri": "http://easymock.onelaas.com/mock/5f6dd029fca2eb0020116ac0/realms/columns",
-              "method": "GET"
-            }
-          ]
-        }
-      ]
-    }
-  ],
-  "components": [
-    {
-      "name": "@lnm/login-layout",
-      "type": "uri",
-      "uri": "http://oss.onelaas.com/ux/lnm-login-layout/1.0.4/dist/main-1.0.4.min.js",
-      "path": "@lnm/login-layout"
-    },
-    {
-      "name": "@lnm/login",
-      "type": "uri",
-      "uri": "http://oss.onelaas.com/ux/lnm-login/1.1.5/dist/main-1.1.5.min.js",
-      "path": "@lnm/login"
-    },
-    {
-      "name": "@lnm/nav-layout",
-      "type": "uri",
-      "uri": "http://oss.onelaas.com/ux/lnm-nav-layout/1.1.19/dist/main-1.1.19.min.js",
-      "path": "@lnm/nav-layout"
-    },
-    {
-      "name": "@lnm/table",
-      "type": "uri",
-      "uri": "http://oss.onelaas.com/ux/lnm-table/1.2.13/dist/main-1.2.13.min.js",
-      "path": "@lnm/table"
-    }
-  ],
-  "authorization": {},
-  "externals": [
-    {
-      "type": "script",
-      "uri": "//onepaas.oss-cn-beijing.aliyuncs.com/antd/antd.min.js"
-    },
-    {
-      "type": "style",
-      "uri": "//onepaas.oss-cn-beijing.aliyuncs.com/antd/antd.min.css"
-    }
-  ],
-  "pages": [
-    {
-      "name": "login",
-      "path": "/login",
-      "layout": {
-        "name": "@lnm/login-layout",
-        "statics": {}
-      },
-      "components": [
-        {
           "name": "@lnm/login",
-          "slot": "content",
-          "statics": {},
-          "metadata-dep": "aabe33ff-cc2a-4d46-8db3-18ae8c0f4500",
-          "links": [
+          "type": "uri",
+          "uri": "http://oss.onelaas.com/ux/lnm-login/1.1.11/dist/main-1.1.11.min.js",
+          "path": "@lnm/login"
+        }
+      ],
+      "authorization": {
+        "type": "jwt",
+        "access-token": "Authorization",
+        "auth-pages": [
+          null
+        ],
+        "un-auth": {
+          "redirect": "login"
+        }
+      },
+      "externals": [
+        {
+          "type": "script",
+          "uri": "//onepaas.oss-cn-beijing.aliyuncs.com/antd/antd.min.js"
+        },
+        {
+          "type": "style",
+          "uri": "//onepaas.oss-cn-beijing.aliyuncs.com/antd/antd.min.css"
+        }
+      ],
+      "pages": [
+        {
+          "name": "login",
+          "path": "/login",
+          "layout": {
+            "name": "@lnm/login-layout",
+            "statics": {}
+          },
+          "components": [
             {
-              "name": "home",
-              "value": "realms"
+              "name": "@lnm/login",
+              "slot": "content",
+              "statics": {},
+              "metadata-dep": "163bf803-8883-457f-8ec7-a1a0c5c1dc35"
             }
           ]
         }
       ]
-    },
-    {
-      "name": "realms",
-      "path": "/realms",
-      "layout": {
-        "name": "@lnm/nav-layout",
-        "statics": {
-          "navs": [
-            {
-              "key": "home",
-              "label": "首页",
-              "path": "/home"
-            },
-            {
-              "key": "detail",
-              "label": "详情页",
-              "path": "/detail"
-            }
-          ],
-          "menus": [
-            {
-              "key": "page",
-              "label": "页面",
-              "path": "/page"
-            },
-            {
-              "key": "comp",
-              "label": "组件",
-              "path": "/comp"
-            }
-          ],
-          "activeNav": "home",
-          "activeMenu": "page",
-          "attachQueries": true,
-          "logoSrc": "https://circleci.com/docs/assets/img/logos/logo-wordmark.svg"
-        }
-      },
-      "components": [
-        {
-          "name": "@lnm/table",
-          "slot": "content",
-          "statics": {},
-          "metadata-dep": "1bab0b35-3642-47b7-a7ad-c403d87e50b1"
-        }
-      ]
-    }
-  ]
-}
+    };
   </script>
-  <!-- <script src="//onepaas.oss-cn-beijing.aliyuncs.com/app/app-1.js"></script> -->
-  <script src="//onepaas.oss-cn-beijing.aliyuncs.com/react/react.development.js"></script>
-  <script src="//onepaas.oss-cn-beijing.aliyuncs.com/react/react-dom.development.js"></script>
+  <script src="http://oss.onelaas.com/react/react.development.js"></script>
+  <script src="http://oss.onelaas.com/react/react-dom.development.js"></script>
 </head>
 
 <body>
