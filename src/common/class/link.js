@@ -5,12 +5,13 @@ import history from '../../history';
 export default class Link {
 
   constructor(config) {
-    if (!config) return undefined;
-    let { fields, links } = config;
-    this.fields = fields;
-    this.links = links;
+    if (config) {
+      let { fields, links } = config;
+      this.fields = fields;
+      this.links = links;
+      this.attachFn(links);
+    }
     this.history = history;
-    this.attachFn(links);
   }
 
   /**
