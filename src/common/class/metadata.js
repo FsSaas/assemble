@@ -2,12 +2,12 @@ import format from 'string-template';
 import qs from 'qs';
 
 export default class {
+
   constructor(resource) {
     let { uri, fields, actions } = resource || {};
     this.actions = actions;
     this.uri = uri;
     this._fields = [];
-    // 记录原参数
     this.resource = resource;
     let self = this;
 
@@ -19,32 +19,6 @@ export default class {
         this._fields.push({ 'name': it });
       } else if (typeof it == 'object') {
         this._fields.push(it);
-      }
-    });
-
-    // 获取Field字段的值
-    this._fields.forEach(it => {
-      let { type = 'data' } = it;
-      switch (type) {
-        case 'query':
-          let hashQuery = (location.hash || '').replace(/^.+?\?/, '');
-          let query = qs.parse(hashQuery);
-          it.value = query[it.value];
-          break;
-        case 'static':
-          // it.value
-          break;
-        case 'local':
-          it.value = localStorage.getItem(it.key);
-          break;
-        case 'session':
-          it.value = sessionStorage.getItem(it.key);
-          break;
-        case 'data':
-          // 初始化数据，从Data中
-          it.type = 'data';
-          break;
-        default: break;
       }
     });
 
@@ -60,49 +34,40 @@ export default class {
   }
 
   /**
-   * 通过配置Fields初始化数据
-   * @param {事件传递的参数} data 
+   * 整合 Fields 和 行为参数的值，提供请求使用
+   * @param {*} actionArgs 
    */
-  getFields(data) {
-    let envFields = [];
-    this._fields.forEach(it => {
-      if (it.type == 'data') {
-        envFields.push({ 'name': it.name, 'value': data[it.name] });
-      } else {
-        envFields.push(it);
+  getComputeData(actionArgs) {
+    let data = {};
+    // 整合配置的Fields中的值
+    this._fields.map(field => {
+      let { name, type, value } = field;
+      // 根据 Field 类型获取值
+      switch (type) {
+        case 'query':
+          let hashQuery = (location.hash || '').replace(/^.+?\?/, '');
+          let query = qs.parse(hashQuery);
+          data[name] = query[value];
+          break;
+        case 'arguments':
+          data[name] = actionArgs[value];
+          break;
+        case 'local':
+          data[name] = localStorage.getItem(value);
+          break;
+        case 'session':
+          data[name] = sessionStorage.getItem(value);
+          break;
+        default: break;
       }
     });
-    return envFields;
+    // 整个行为参数值
+    Object.assign(data, actionArgs);
+    return data;
   }
 
-  /**
-   * 通过用户配置的key返回需要的值
-   * uri template
-   * body
-   * @param {*} it 
-   * @param {*} data 
-   */
-  getDataFromData(it, data) {
-    let res = {};
-    let { name, type, value } = it;
-    // query 在 url query 中取值
-    if (type == 'query') {
-      let [field] = this._fields.filter(it => it.name = name);
-      res[name] = field.value;
-    }
-    // arguments 在 api 参数中取值
-    else if (type == 'arguments') {
-      res[name] = data[value];
-    }
-    return res;
-  }
-
-  /**
-   * 单个请求
-   * @param {*} config 
-   */
   peerSend(config, data, key) {
-    let envVars = this.getFields(data);
+    let computeData = this.getComputeData(data);
     let {
       uri,
       method,
@@ -117,29 +82,23 @@ export default class {
     method = method || 'GET';
 
     // 解析RUI中的占位符，替换为真实字符串
-    let vars = {};
-    envVars.forEach(it => {
-      let keyData = this.getDataFromData(it, data);
-      Object.assign(vars, keyData);
-    });
-    uri = format(uri, vars);
+    uri = format(uri, computeData);
 
     // 解析请求实体
-    // 通过配置组装请求对象
-    let reqBody = data;
+    let reqBody = {};
     if (body.length) {
-      let mappedBody = {};
+      // 配置了Body参数时，通过配置获取请求值
       body.forEach(it => {
-        let keyData = this.getDataFromData(it, data);
-        Object.assign(mappedBody, keyData);
-      })
-      reqBody = mappedBody;
+        reqBody[it.name] = computeData[it.name];
+      });
+    } else {
+      reqBody = data;
     }
 
     // 处理请求参数
     let reqOpts = { method, headers };
     if (method == 'GET' || method == 'HEAD') {
-      // Fetch GET/HEAD do not have 'body'
+      // 
     } else {
       // 处理 FormData 格式
       if ((headers['Content-Type'] || '').match(/x-www-form-urlencoded/)) {
@@ -180,6 +139,7 @@ export default class {
         let { format, 'format-eval': formatEval } = response || {};
         if (formatEval) {
           console.warn('不建议使用 format-eval 属性配置格式化参数，可通过数据接口或者自己定义组件解决');
+          debugger
           let newRes = eval(response['format-eval']); // eval 里会用到 res 参数
           return newRes;
         } else if (format) {

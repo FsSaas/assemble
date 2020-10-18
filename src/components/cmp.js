@@ -1,11 +1,11 @@
 import React from 'react';
 import getComponent from '../common/utils/get-component';
-import packLinks from '../common/utils/pack-links';
 import history from '../history';
 import qs from 'querystring';
 import getResFromDeps from '../common/utils/get-resources-from-deps';
 import store from '../store';
 import Metadata from '../common/class/metadata';
+import Link from '../common/class/link';
 
 export default class CMP extends React.Component {
 
@@ -35,7 +35,7 @@ export default class CMP extends React.Component {
     let {
       name,
       slot,
-      links = [],
+      links,
       statics = {},
       'resource-deps': resourceDeps = [], // 子组件依赖的数据源
       'query-deps': queryDeps = [],
@@ -43,9 +43,7 @@ export default class CMP extends React.Component {
       pageResources = {}
     } = this.props;
 
-    let linkObjs = packLinks(links);
-    linkObjs['history'] = history;
-
+    let linkObjs = new Link(links);
     let ElementComponent = getComponent(name);
 
     // 组装query对象

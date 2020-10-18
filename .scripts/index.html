@@ -5,81 +5,114 @@
   <meta charset="utf-8">
   <script>
     window.app = {
-      "metadatas": [
+  "metadatas": [
+    {
+      "name": "0d1a07f9-33f8-4f16-912e-c1335eb69873",
+      "type": "restful",
+      "fields": [],
+      "actions": [
         {
-          "name": "163bf803-8883-457f-8ec7-a1a0c5c1dc35",
-          "type": "restful",
-          "fields": [],
-          "actions": [
+          "name": "signin",
+          "patchs": [
             {
-              "name": "signin",
-              "patchs": [
-                {
-                  "id": "9eeeed89-fb14-4fa2-9438-f7929bc38158",
-                  "method": "POST",
-                  "uri": "https://kms.rainiertrust.com/authorize/token",
-                  "headers": {
-                    "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
-                  }
-                }
-              ]
-            }
-          ]
-        }
-      ],
-      "components": [
-        {
-          "name": "@lnm/login-layout",
-          "type": "uri",
-          "uri": "http://oss.onelaas.com/ux/lnm-login-layout/1.0.4/dist/main-1.0.4.min.js",
-          "path": "@lnm/login-layout"
-        },
-        {
-          "name": "@lnm/login",
-          "type": "uri",
-          "uri": "http://oss.onelaas.com/ux/lnm-login/1.1.11/dist/main-1.1.11.min.js",
-          "path": "@lnm/login"
-        }
-      ],
-      "authorization": {
-        "type": "jwt",
-        "access-token": "Authorization",
-        "auth-pages": [
-          null
-        ],
-        "un-auth": {
-          "redirect": "login"
-        }
-      },
-      "externals": [
-        {
-          "type": "script",
-          "uri": "//onepaas.oss-cn-beijing.aliyuncs.com/antd/antd.min.js"
-        },
-        {
-          "type": "style",
-          "uri": "//onepaas.oss-cn-beijing.aliyuncs.com/antd/antd.min.css"
-        }
-      ],
-      "pages": [
-        {
-          "name": "login",
-          "path": "/login",
-          "layout": {
-            "name": "@lnm/login-layout",
-            "statics": {}
-          },
-          "components": [
-            {
-              "name": "@lnm/login",
-              "slot": "content",
-              "statics": {},
-              "metadata-dep": "163bf803-8883-457f-8ec7-a1a0c5c1dc35"
+              "id": "1d17e8cf-2ac0-4c44-8b8f-e9d4842a1011",
+              "uri": "https://kms.rainiertrust.com/authorize/token",
+              "method": "POST",
+              "headers": {
+                "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
+              }
             }
           ]
         }
       ]
-    };
+    }
+  ],
+  "components": [
+    {
+      "name": "@lnm/login-layout",
+      "type": "uri",
+      "uri": "http://oss.onelaas.com/ux/lnm-login-layout/1.0.4/dist/main-1.0.4.min.js",
+      "path": "@lnm/login-layout"
+    },
+    {
+      "name": "@lnm/login",
+      "type": "uri",
+      "uri": "http://oss.onelaas.com/ux/lnm-login/1.1.14/dist/main-1.1.14.min.js",
+      "path": "@lnm/login"
+    }
+  ],
+  "authorization": {
+    "type": "jwt",
+    "access-token": "Authorization",
+    "auth-pages": [
+      null
+    ],
+    "un-auth": {
+      "redirect": "login"
+    }
+  },
+  "externals": [
+    {
+      "type": "script",
+      "uri": "//onepaas.oss-cn-beijing.aliyuncs.com/antd/antd.min.js"
+    },
+    {
+      "type": "style",
+      "uri": "//onepaas.oss-cn-beijing.aliyuncs.com/antd/antd.min.css"
+    }
+  ],
+  "pages": [
+    {
+      "name": "login",
+      "path": "/login",
+      "layout": {
+        "name": "@lnm/login-layout",
+        "statics": {}
+      },
+      "components": [
+        {
+          "name": "@lnm/login",
+          "slot": "content",
+          "statics": {},
+          "metadata-dep": "0d1a07f9-33f8-4f16-912e-c1335eb69873",
+          "links": {
+            "fields": [
+              {
+                "name": "entityId",
+                "type": "arguments",
+                "value": "entityId"
+              },
+              {
+                "name": "realmId",
+                "type": "arguments",
+                "value": "realmId"
+              },
+              {
+                "name": "id",
+                "type": "arguments",
+                "value": "id"
+              }
+            ],
+            "links": {
+              "root": {
+                "page": "realms",
+                "path": "/realms"
+              },
+              "realm": {
+                "page": "entities",
+                "path": "/entities?realmId={realmId}"
+              },
+              "entity": {
+                "page": "entities-keys",
+                "path": "/entities-keys?realmId={realmId}&entityId={entityId}"
+              }
+            }
+          }
+        }
+      ]
+    }
+  ]
+};
   </script>
   <script src="http://oss.onelaas.com/react/react.development.js"></script>
   <script src="http://oss.onelaas.com/react/react-dom.development.js"></script>
