@@ -59,6 +59,11 @@ export default class Link {
           let computeData = this.getComputeData(args);
           let path = format(value.path, computeData);
           this.history.push(path);
+        },
+        'getRawPath': (args = {}) => {
+          let computeData = this.getComputeData(args);
+          let path = format(value.path, computeData);
+          return path;
         }
       }
     }
