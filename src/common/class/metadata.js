@@ -72,7 +72,7 @@ export default class {
       uri,
       method,
       headers = {},
-      body = [],
+      body = {},
       response = {},
       request = {},
     } = config;
@@ -86,11 +86,15 @@ export default class {
 
     // 解析请求实体
     let reqBody = {};
-    if (body.length) {
-      // 配置了Body参数时，通过配置获取请求值
-      body.forEach(it => {
-        reqBody[it.name] = computeData[it.name];
-      });
+    let { 'format': bodyDataFormat } = body
+    if (bodyDataFormat) {
+      try {
+        // 格式化请求实体，执行代码
+        let formatBodyFn = new Function('data', bodyDataFormat);
+        reqBody = formatBodyFn(computeData);
+      } catch (err) {
+        console.error('请求实体格式化异常', err);
+      }
     } else {
       reqBody = data;
     }
@@ -136,18 +140,14 @@ export default class {
       })
       // 处理请求后参数
       .then(res => {
-        let { format, 'format-eval': formatEval } = response || {};
-        if (formatEval) {
-          console.warn('不建议使用 format-eval 属性配置格式化参数，可通过数据接口或者自己定义组件解决');
-          debugger
-          let newRes = eval(response['format-eval']); // eval 里会用到 res 参数
+        let { 'format': formatRes } = response || {};
+        // 格式化请求后数据
+        if (formatRes) {
+          let formatResFn = new Function('res', formatRes);
+          let newRes = formatResFn(res);
           return newRes;
-        } else if (format) {
-          // eval 里会用到 res 参数
-          return res;
-        } else {
-          return res;
         }
+        return res;
       })
       .catch(err => {
         console.error(err);

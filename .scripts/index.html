@@ -5,114 +5,231 @@
   <meta charset="utf-8">
   <script>
     window.app = {
-  "metadatas": [
-    {
-      "name": "0d1a07f9-33f8-4f16-912e-c1335eb69873",
-      "type": "restful",
-      "fields": [],
-      "actions": [
+      "metadatas": [
         {
-          "name": "signin",
-          "patchs": [
+          "name": "cdb518ac-24b9-45c8-a026-7ede163f3849",
+          "type": "restful",
+          "fields": [
             {
-              "id": "1d17e8cf-2ac0-4c44-8b8f-e9d4842a1011",
-              "uri": "https://kms.rainiertrust.com/authorize/token",
-              "method": "POST",
-              "headers": {
-                "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
+              "name": "realmKeyId",
+              "type": "arguments",
+              "value": "id"
+            },
+            {
+              "name": "realmId",
+              "type": "query",
+              "value": "realmId"
+            }
+          ],
+          "actions": [
+            {
+              "name": "new",
+              "patchs": [
+                {
+                  "id": "379d4ac7-8c9b-4f8d-ada1-281e5311168f",
+                  "uri": "http://easymock.onelaas.com/mock/5f6dd029fca2eb0020116ac0/keys",
+                  "method": "GET"
+                }
+              ]
+            },
+            {
+              "name": "findOne",
+              "patchs": [
+                {
+                  "id": "35e33865-4215-43eb-9dad-6d5a576d89a0",
+                  "uri": "https://kms.rainiertrust.com/realm/{realmId}/secrets/key/{realmKeyId}",
+                  "method": "GET"
+                }
+              ]
+            },
+            {
+              "name": "list",
+              "patchs": [
+                {
+                  "id": "1e4cd004-c82b-43d2-a0c8-c22ca3b69a33",
+                  "uri": "https://kms.rainiertrust.com/realm/{realmId}/secrets/key/list",
+                  "method": "GET",
+                  "body": {
+                    "format": "return data"
+                  },
+                  "response": {
+                    "format": "return res"
+                  },
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "components": [
+        {
+          "name": "@lnm/nav-layout",
+          "type": "uri",
+          "uri": "http://oss.onelaas.com/ux/lnm-nav-layout/1.1.22/dist/main-1.1.22.min.js",
+          "path": "@lnm/nav-layout"
+        },
+        {
+          "name": "@lnm/table",
+          "type": "uri",
+          "uri": "http://oss.onelaas.com/ux/lnm-table/1.2.24/dist/main-1.2.24.min.js",
+          "path": "@lnm/table"
+        }
+      ],
+      "authorization": {
+        "type": "jwt",
+        "access-token": "Authorization",
+        "auth-pages": [
+          null,
+          null,
+          "realms-keys",
+          null
+        ],
+        "un-auth": {}
+      },
+      "externals": [
+        {
+          "type": "script",
+          "uri": "//onepaas.oss-cn-beijing.aliyuncs.com/antd/antd.min.js"
+        },
+        {
+          "type": "style",
+          "uri": "//onepaas.oss-cn-beijing.aliyuncs.com/antd/antd.min.css"
+        }
+      ],
+      "pages": [
+        {
+          "name": "realms-keys",
+          "path": "/realms-keys",
+          "layout": {
+            "name": "@lnm/nav-layout",
+            "statics": {
+              "menus": [
+                {
+                  "key": "entities",
+                  "label": "Entities",
+                  "path": "/entities"
+                },
+                {
+                  "key": "realms-keys",
+                  "label": "Keys",
+                  "path": "/realms-keys"
+                }
+              ],
+              "activeMenu": "realms-keys",
+              "logoSrc": "https://circleci.com/docs/assets/img/logos/logo-wordmark.svg"
+            },
+            "links": {
+              "fields": [
+                {
+                  "name": "realmId",
+                  "type": "query",
+                  "value": "realmId"
+                }
+              ],
+              "links": {
+                "page": {
+                  "path": "realmId={realmId}"
+                },
+                "login": {
+                  "page": "login",
+                  "path": "/login"
+                }
               }
+            }
+          },
+          "components": [
+            {
+              "name": "@lnm/table",
+              "slot": "content",
+              "statics": {
+                "size": "small",
+                "staticColumn": true,
+                "staticField": true,
+                "showHeader": true,
+                "hasCreateBtn": true,
+                "title": "Realm Keys",
+                "pageStart": "0",
+                "columns": [
+                  {
+                    "title": "ID",
+                    "dataIndex": "id",
+                    "key": "id",
+                    "value": "id"
+                  },
+                  {
+                    "title": "RealmId",
+                    "dataIndex": "realmId",
+                    "key": "realmId",
+                    "value": "realmId"
+                  },
+                  {
+                    "title": "EntityId",
+                    "dataIndex": "entityId",
+                    "key": "entityId",
+                    "value": "entityId"
+                  },
+                  {
+                    "title": "Type",
+                    "dataIndex": "type",
+                    "key": "type",
+                    "value": "type"
+                  },
+                  {
+                    "title": "Status",
+                    "dataIndex": "status",
+                    "key": "status",
+                    "value": "status"
+                  },
+                  {
+                    "title": "删除",
+                    "dataIndex": "deletionAllow",
+                    "key": "deletionAllow",
+                    "value": "config.deletionAllow"
+                  },
+                  {
+                    "title": "备份",
+                    "dataIndex": "allowPlaintextBackup",
+                    "key": "allowPlaintextBackup",
+                    "value": "config.allowPlaintextBackup"
+                  },
+                  {
+                    "title": "导出",
+                    "dataIndex": "allowExportable",
+                    "key": "allowExportable",
+                    "value": "config.allowExportable"
+                  },
+                  {
+                    "title": "操作",
+                    "dataIndex": "cz",
+                    "key": "cz",
+                    "render": [
+                      "edit",
+                      "delete"
+                    ],
+                    "value": "id"
+                  }
+                ],
+                "fields": [
+                  {
+                    "name": "id",
+                    "label": "ID",
+                    "type": "string",
+                    "require": true
+                  },
+                  {
+                    "name": "description",
+                    "label": "Description",
+                    "type": "string",
+                    "require": true
+                  }
+                ]
+              },
+              "metadata-dep": "cdb518ac-24b9-45c8-a026-7ede163f3849"
             }
           ]
         }
       ]
-    }
-  ],
-  "components": [
-    {
-      "name": "@lnm/login-layout",
-      "type": "uri",
-      "uri": "http://oss.onelaas.com/ux/lnm-login-layout/1.0.4/dist/main-1.0.4.min.js",
-      "path": "@lnm/login-layout"
-    },
-    {
-      "name": "@lnm/login",
-      "type": "uri",
-      "uri": "http://oss.onelaas.com/ux/lnm-login/1.1.14/dist/main-1.1.14.min.js",
-      "path": "@lnm/login"
-    }
-  ],
-  "authorization": {
-    "type": "jwt",
-    "access-token": "Authorization",
-    "auth-pages": [
-      null
-    ],
-    "un-auth": {
-      "redirect": "login"
-    }
-  },
-  "externals": [
-    {
-      "type": "script",
-      "uri": "//onepaas.oss-cn-beijing.aliyuncs.com/antd/antd.min.js"
-    },
-    {
-      "type": "style",
-      "uri": "//onepaas.oss-cn-beijing.aliyuncs.com/antd/antd.min.css"
-    }
-  ],
-  "pages": [
-    {
-      "name": "login",
-      "path": "/login",
-      "layout": {
-        "name": "@lnm/login-layout",
-        "statics": {}
-      },
-      "components": [
-        {
-          "name": "@lnm/login",
-          "slot": "content",
-          "statics": {},
-          "metadata-dep": "0d1a07f9-33f8-4f16-912e-c1335eb69873",
-          "links": {
-            "fields": [
-              {
-                "name": "entityId",
-                "type": "arguments",
-                "value": "entityId"
-              },
-              {
-                "name": "realmId",
-                "type": "arguments",
-                "value": "realmId"
-              },
-              {
-                "name": "id",
-                "type": "arguments",
-                "value": "id"
-              }
-            ],
-            "links": {
-              "root": {
-                "page": "realms",
-                "path": "/realms"
-              },
-              "realm": {
-                "page": "entities",
-                "path": "/entities?realmId={realmId}"
-              },
-              "entity": {
-                "page": "entities-keys",
-                "path": "/entities-keys?realmId={realmId}&entityId={entityId}"
-              }
-            }
-          }
-        }
-      ]
-    }
-  ]
-};
+    };
   </script>
   <script src="http://oss.onelaas.com/react/react.development.js"></script>
   <script src="http://oss.onelaas.com/react/react-dom.development.js"></script>
