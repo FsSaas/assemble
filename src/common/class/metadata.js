@@ -132,25 +132,27 @@ export default class {
     return fetch(uri, reqOpts)
       // 处理返回接口结构
       .then(res => {
-        let { type } = response || {};
-        if (type == 'json') return res.json();
-        if (type == 'text') return res.text();
-        if (type === undefined) return res.json();
-        return res;
+        if (res.status >= 400 && res.status < 600) {
+          throw new Error("Bad response from server");
+        }
+        // let { type } = response || {};
+        // if (type == 'json') return res.json();
+        // if (type == 'text') return res.text();
+        // if (type === undefined) return res.json();
+        return res.json().catch(err => {
+          return undefined;
+        })
       })
       // 处理请求后参数
       .then(res => {
         let { 'format': formatRes } = response || {};
         // 格式化请求后数据
-        if (formatRes) {
+        if (formatRes && res) {
           let formatResFn = new Function('res', formatRes);
           let newRes = formatResFn(res);
           return newRes;
         }
         return res;
-      })
-      .catch(err => {
-        console.error(err);
       })
   }
 

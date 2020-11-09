@@ -5,15 +5,534 @@
   <meta charset="utf-8">
   <script>
     window.app = {
-      "metadatas": [
+  "metadatas": [
+    {
+      "name": "cccd3310-6d0d-48b7-b31f-19af617e387d",
+      "type": "restful",
+      "fields": [
         {
-          "name": "cdb518ac-24b9-45c8-a026-7ede163f3849",
-          "type": "restful",
+          "name": "realmKeyId",
+          "type": "query",
+          "value": "realmKeyId"
+        },
+        {
+          "name": "realmId",
+          "type": "query",
+          "value": "realmId"
+        }
+      ],
+      "actions": [
+        {
+          "name": "update",
+          "patchs": [
+            {
+              "id": "6202c3fe-56b9-44f1-9b89-7623a07014a3",
+              "uri": "https://kms.rainiertrust.com/realm/{realmId}/secrets/key/{realmKeyId}",
+              "method": "PUT",
+              "headers": {
+                "Content-Type": "application/json"
+              },
+              "body": {
+                "format": "return {\n  \"status\": \"Active\",\n  \"config\": {\n    \"deletionAllow\": data.deletionAllow,\n    \"allowPlaintextBackup\": data.allowPlaintextBackup,\n    \"allowExportable\": data.allowExportable,\n  },\n  \"description\": data.description\n}"
+              }
+            }
+          ]
+        },
+        {
+          "name": "findOne",
+          "patchs": [
+            {
+              "id": "00c0ecc8-caec-420f-aca6-bef29f9da1cf",
+              "uri": "https://kms.rainiertrust.com/realm/{realmId}/secrets/key/{realmKeyId}",
+              "method": "GET",
+              "response": {
+                "format": "return Object.assign({}, res, res.config);"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "eb3e01f6-817b-488e-8cff-af3aeccf4c57",
+      "type": "restful",
+      "fields": [
+        {
+          "name": "entityKeyId",
+          "type": "query",
+          "value": "entityKeyId"
+        },
+        {
+          "name": "entityId",
+          "type": "query",
+          "value": "entityId"
+        },
+        {
+          "name": "entityType",
+          "type": "query",
+          "value": "entityType"
+        },
+        {
+          "name": "realmId",
+          "type": "query",
+          "value": "realmId"
+        }
+      ],
+      "actions": [
+        {
+          "name": "findOne",
+          "patchs": [
+            {
+              "id": "5effff67-57cd-4855-82f4-5fd5c6e0566b",
+              "uri": "https://kms.rainiertrust.com/realm/{realmId}/entities/{entityType}/{entityId}/secrets/key/{entityKeyId}",
+              "method": "GET",
+              "response": {
+                "format": "return Object.assign(res, res.config)"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "28b3170e-d3a4-4b4e-a0cd-1770866a71bc",
+      "type": "restful",
+      "fields": [
+        {
+          "name": "entityKeyId",
+          "type": "arguments",
+          "value": "id"
+        },
+        {
+          "name": "entityId",
+          "type": "query",
+          "value": "entityId"
+        },
+        {
+          "name": "entityType",
+          "type": "query",
+          "value": "entityType"
+        },
+        {
+          "name": "realmId",
+          "type": "query",
+          "value": "realmId"
+        }
+      ],
+      "actions": [
+        {
+          "name": "findOne",
+          "patchs": [
+            {
+              "id": "f7f93d6e-f56d-4ecf-9704-69f11bc637f1",
+              "uri": "https://kms.rainiertrust.com/realm/{realmId}/entities/{entityType}/{entityId}/secrets/key/{entityKeyId}",
+              "method": "GET"
+            }
+          ]
+        },
+        {
+          "name": "new",
+          "patchs": [
+            {
+              "id": "bfcd7efc-2e0d-436f-8006-ee5166c2d40b",
+              "uri": "https://kms.rainiertrust.com/realm/{realmId}/entities/{entityType}/{entityId}/secrets/key",
+              "method": "POST",
+              "headers": {
+                "Content-Type": "application/json"
+              }
+            }
+          ]
+        },
+        {
+          "name": "list",
+          "patchs": [
+            {
+              "id": "264e7bd8-0922-4eeb-9813-ec999137f5eb",
+              "uri": "https://kms.rainiertrust.com/realm/{realmId}/entities/{entityType}/{entityId}/secrets/key/list",
+              "method": "GET",
+              "response": {
+                "format": "return { 'items':res, 'total':res.length }"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "e7bf61cb-4222-4c9a-8a9f-acf7d3c99788",
+      "type": "restful",
+      "fields": [
+        {
+          "name": "realmKeyId",
+          "type": "arguments",
+          "value": "id"
+        },
+        {
+          "name": "realmId",
+          "type": "query",
+          "value": "realmId"
+        }
+      ],
+      "actions": [
+        {
+          "name": "delete",
+          "patchs": [
+            {
+              "id": "7294f9dc-8ef4-487a-ad6d-0466203623a9",
+              "uri": "https://kms.rainiertrust.com/realm/{realmId}/secrets/key/{realmKeyId}",
+              "method": "DELETE"
+            }
+          ]
+        },
+        {
+          "name": "findOne",
+          "patchs": [
+            {
+              "id": "c7ad555a-24be-4402-9150-cd5d33952266",
+              "uri": "https://kms.rainiertrust.com/realm/{realmId}/secrets/key/{realmKeyId}",
+              "method": "GET",
+              "body": {
+                "format": ""
+              },
+              "response": {
+                "format": "return Object.assign({}, res, res.config);"
+              }
+            }
+          ]
+        },
+        {
+          "name": "new",
+          "patchs": [
+            {
+              "id": "f6eb58fe-59f1-44e3-8685-2f86faf70c4e",
+              "uri": "https://kms.rainiertrust.com/realm/{realmId}/secrets/key",
+              "method": "POST",
+              "body": {
+                "format": "return {\n  'type': data.type,\n  'description': data.description,\n  'config': {\n    'deletionAllow': data.deletionAllow,\n    'allowPlaintextBackup': data.allowPlaintextBackup,\n    'AllowExportable': data.AllowExportable\n  }\n}"
+              },
+              "headers": {
+                "Content-Type": "application/json"
+              }
+            }
+          ]
+        },
+        {
+          "name": "list",
+          "patchs": [
+            {
+              "id": "091a4266-5979-47ce-aa87-ad93f10184ca",
+              "uri": "https://kms.rainiertrust.com/realm/{realmId}/secrets/key/list",
+              "method": "GET",
+              "response": {
+                "format": "return {'items':res, 'total':res.length}"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "b7c86a89-00f8-4a9c-a8ea-1b47efccf908",
+      "type": "restful",
+      "fields": [
+        {
+          "name": "entityId",
+          "type": "arguments",
+          "value": "id"
+        },
+        {
+          "name": "entityType",
+          "type": "arguments",
+          "value": "type"
+        },
+        {
+          "name": "type",
+          "type": "arguments",
+          "value": "type"
+        },
+        {
+          "name": "id",
+          "type": "arguments",
+          "value": "id"
+        },
+        {
+          "name": "realmId",
+          "type": "query",
+          "value": "realmId"
+        }
+      ],
+      "actions": [
+        {
+          "name": "delete",
+          "patchs": [
+            {
+              "id": "88333a7d-1293-4ab6-8ce7-c4c4155b8334",
+              "uri": "https://kms.rainiertrust.com/realm/{realmId}/entities/{entityType}/{entityId}",
+              "method": "PUT",
+              "headers": {
+                "Content-Type": "application/json"
+              },
+              "body": {
+                "format": "return {\n    \"name\": data.name,\n    \"status\": \"UnActive\"\n}"
+              }
+            }
+          ]
+        },
+        {
+          "name": "update",
+          "patchs": [
+            {
+              "id": "475897a2-2b16-488d-b899-fe3b50cea7ca",
+              "uri": "https://kms.rainiertrust.com/realm/{realmId}/entities/{entityType}/{entityId}",
+              "method": "PUT",
+              "headers": {
+                "Content-Type": "application/json"
+              },
+              "body": {
+                "format": "return {\n  'name': data.name,\n  'status': 'Active'\n}"
+              }
+            }
+          ]
+        },
+        {
+          "name": "new",
+          "patchs": [
+            {
+              "id": "59d12042-789a-4e55-9a4a-054700ee111e",
+              "uri": "https://kms.rainiertrust.com/realm/{realmId}/entities/{entityType}",
+              "method": "POST",
+              "headers": {
+                "Content-Type": "application/json"
+              },
+              "body": {
+                "format": "return {\n  'id': data.id,\n  'name': data.name,\n  'secret': data.secret\n}"
+              }
+            }
+          ]
+        },
+        {
+          "name": "list",
+          "patchs": [
+            {
+              "id": "167f7f1b-8d40-4a33-9734-35247c8afc3d",
+              "uri": "https://kms.rainiertrust.com/realm/{realmId}/entities/list?pageIndex={current}&pageSize={pageSize}",
+              "method": "GET",
+              "response": {
+                "format": "return { 'items': res.values, 'total': res.total }"
+              }
+            }
+          ]
+        },
+        {
+          "name": "findOne",
+          "patchs": [
+            {
+              "id": "073e4cd9-936b-4b01-9ce1-ad49288c085c",
+              "uri": "https://kms.rainiertrust.com/realm/{realmId}/entities/{type}/{id}",
+              "method": "GET"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "a3c5cfcf-b3be-486c-be3c-b06c9e0dfb4a",
+      "type": "restful",
+      "fields": [],
+      "actions": [
+        {
+          "name": "signin",
+          "patchs": [
+            {
+              "id": "d9f1cda8-5b6f-48cd-8268-37c67dae64cd",
+              "uri": "https://kms.rainiertrust.com/authorize/token",
+              "method": "POST",
+              "headers": {
+                "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "f8af1300-762f-4849-b462-82a39e96a468",
+      "type": "restful",
+      "fields": [
+        {
+          "name": "realmId",
+          "type": "arguments",
+          "value": "id"
+        }
+      ],
+      "actions": [
+        {
+          "name": "delete",
+          "patchs": [
+            {
+              "id": "060c5448-5eb2-4291-ab63-17fda614cda1",
+              "uri": "https://kms.rainiertrust.com/realm/{realmId}",
+              "method": "PUT",
+              "headers": {
+                "Content-Type": "application/json"
+              },
+              "body": {
+                "format": "return {\n    \"name\": data.name,\n    \"status\": \"UnActive\"\n}"
+              }
+            }
+          ]
+        },
+        {
+          "name": "update",
+          "patchs": [
+            {
+              "id": "48027937-9c0a-48b7-b9f8-873996abe230",
+              "uri": "https://kms.rainiertrust.com/realm/{realmId}",
+              "method": "PUT",
+              "body": {
+                "format": "return {\n  'name': data.name,\n  'status': 'Active'\n}"
+              },
+              "headers": {
+                "Content-Type": "application/json"
+              }
+            }
+          ]
+        },
+        {
+          "name": "findOne",
+          "patchs": [
+            {
+              "id": "c6e23842-3e5e-417a-817f-674402b17d6c",
+              "uri": "https://kms.rainiertrust.com/realm/{realmId}",
+              "method": "GET"
+            }
+          ]
+        },
+        {
+          "name": "list",
+          "patchs": [
+            {
+              "id": "f0efdc71-275e-4dce-b289-f8138d8b5b23",
+              "uri": "https://kms.rainiertrust.com/realm/list?pageIndex={current}&pageSize={pageSize}",
+              "method": "GET",
+              "response": {
+                "format": "return { 'items': res.values, 'total': res.total }"
+              }
+            }
+          ]
+        },
+        {
+          "name": "new",
+          "patchs": [
+            {
+              "id": "642ce9db-2054-41ff-ba75-a30d2fe775a2",
+              "uri": "https://kms.rainiertrust.com/realm",
+              "method": "POST",
+              "body": [],
+              "headers": {
+                "Content-Type": "application/json"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "components": [
+    {
+      "name": "@lnm/nav-layout",
+      "uri": "http://oss.onelaas.com/ux/lnm-nav-layout/1.2.2/dist/main-1.2.2.min.js",
+      "path": "@lnm/nav-layout",
+      "type": "uri"
+    },
+    {
+      "name": "@lnm/form",
+      "uri": "http://oss.onelaas.com/ux/lnm-form/1.1.8/dist/main-1.1.8.min.js",
+      "path": "@lnm/form",
+      "type": "uri"
+    },
+    {
+      "name": "@lnm/table",
+      "uri": "http://oss.onelaas.com/ux/lnm-table/1.2.32/dist/main-1.2.32.min.js",
+      "path": "@lnm/table",
+      "type": "uri"
+    },
+    {
+      "name": "@lnm/login-layout",
+      "uri": "http://oss.onelaas.com/ux/lnm-login-layout/1.0.5/dist/main-1.0.5.min.js",
+      "path": "@lnm/login-layout",
+      "type": "uri"
+    },
+    {
+      "name": "@lnm/login",
+      "uri": "http://oss.onelaas.com/ux/lnm-login/1.1.21/dist/main-1.1.21.min.js",
+      "path": "@lnm/login",
+      "type": "uri"
+    },
+    {
+      "name": "@lnm/falcon-nav-layout",
+      "uri": "http://oss.onelaas.com/ux/lnm-falcon-nav-layout/1.0.0/dist/main-1.0.0.min.js",
+      "path": "@lnm/falcon-nav-layout",
+      "type": "uri"
+    },
+    {
+      "name": "@lnm/falcon-login",
+      "uri": "http://oss.onelaas.com/ux/lnm-falcon-login/1.0.2/dist/main-1.0.2.min.js",
+      "path": "@lnm/falcon-login",
+      "type": "uri"
+    }
+  ],
+  "authorization": {
+    "type": "jwt",
+    "access-token": "Authorization",
+    "auth-pages": [
+      "entities-keys",
+      "entities",
+      "realms-keys",
+      "realms"
+    ],
+    "un-auth": {
+      "redirect": "login"
+    }
+  },
+  "externals": [
+  {
+      "type": "script",
+      "uri": "http://oss.onelaas.com/react/react.development.js"
+    },
+    {
+      "type": "script",
+      "uri": "http://oss.onelaas.com/react/react-dom.development.js"
+    },
+    {
+      "type": "script",
+      "uri": "http://onepaas.oss-cn-beijing.aliyuncs.com/antd/antd.min.js"
+    },
+    {
+      "type": "style",
+      "uri": "http://onepaas.oss-cn-beijing.aliyuncs.com/antd/antd.min.css"
+    }
+  ],
+  "pages": [
+    {
+      "name": "realms-keys-detail",
+      "path": "/realms-keys-detail",
+      "layout": {
+        "name": "@lnm/nav-layout",
+        "statics": {
+          "logoSrc": "https://onepaas.oss-cn-beijing.aliyuncs.com/kms/logo-zs.png"
+        },
+        "links": {
           "fields": [
             {
-              "name": "realmKeyId",
-              "type": "arguments",
-              "value": "id"
+              "name": "entityType",
+              "type": "query",
+              "value": "entityType"
+            },
+            {
+              "name": "entityId",
+              "type": "query",
+              "value": "entityId"
             },
             {
               "name": "realmId",
@@ -21,218 +540,1121 @@
               "value": "realmId"
             }
           ],
-          "actions": [
-            {
-              "name": "new",
-              "patchs": [
-                {
-                  "id": "379d4ac7-8c9b-4f8d-ada1-281e5311168f",
-                  "uri": "http://easymock.onelaas.com/mock/5f6dd029fca2eb0020116ac0/keys",
-                  "method": "GET"
-                }
-              ]
+          "links": {
+            "root": {
+              "page": "realms",
+              "path": "/realms"
             },
-            {
-              "name": "findOne",
-              "patchs": [
-                {
-                  "id": "35e33865-4215-43eb-9dad-6d5a576d89a0",
-                  "uri": "https://kms.rainiertrust.com/realm/{realmId}/secrets/key/{realmKeyId}",
-                  "method": "GET"
-                }
-              ]
+            "realm": {
+              "page": "entities",
+              "path": "/entities?realmId={realmId}"
             },
-            {
-              "name": "list",
-              "patchs": [
-                {
-                  "id": "1e4cd004-c82b-43d2-a0c8-c22ca3b69a33",
-                  "uri": "https://kms.rainiertrust.com/realm/{realmId}/secrets/key/list",
-                  "method": "GET",
-                  "body": {
-                    "format": "return data"
-                  },
-                  "response": {
-                    "format": "return res"
-                  },
-                }
-              ]
+            "entity": {
+              "page": "entities-keys",
+              "path": "/entities-keys?realmId={realmId}&entityId={entityId}&entityType={entityType}"
+            },
+            "login": {
+              "page": "login",
+              "path": "/login"
             }
-          ]
+          }
         }
-      ],
+      },
       "components": [
         {
-          "name": "@lnm/nav-layout",
-          "type": "uri",
-          "uri": "http://oss.onelaas.com/ux/lnm-nav-layout/1.1.22/dist/main-1.1.22.min.js",
-          "path": "@lnm/nav-layout"
-        },
-        {
-          "name": "@lnm/table",
-          "type": "uri",
-          "uri": "http://oss.onelaas.com/ux/lnm-table/1.2.24/dist/main-1.2.24.min.js",
-          "path": "@lnm/table"
-        }
-      ],
-      "authorization": {
-        "type": "jwt",
-        "access-token": "Authorization",
-        "auth-pages": [
-          null,
-          null,
-          "realms-keys",
-          null
-        ],
-        "un-auth": {}
-      },
-      "externals": [
-        {
-          "type": "script",
-          "uri": "//onepaas.oss-cn-beijing.aliyuncs.com/antd/antd.min.js"
-        },
-        {
-          "type": "style",
-          "uri": "//onepaas.oss-cn-beijing.aliyuncs.com/antd/antd.min.css"
-        }
-      ],
-      "pages": [
-        {
-          "name": "realms-keys",
-          "path": "/realms-keys",
-          "layout": {
-            "name": "@lnm/nav-layout",
-            "statics": {
-              "menus": [
-                {
-                  "key": "entities",
-                  "label": "Entities",
-                  "path": "/entities"
-                },
-                {
-                  "key": "realms-keys",
-                  "label": "Keys",
-                  "path": "/realms-keys"
-                }
-              ],
-              "activeMenu": "realms-keys",
-              "logoSrc": "https://circleci.com/docs/assets/img/logos/logo-wordmark.svg"
-            },
-            "links": {
-              "fields": [
-                {
-                  "name": "realmId",
-                  "type": "query",
-                  "value": "realmId"
-                }
-              ],
-              "links": {
-                "page": {
-                  "path": "realmId={realmId}"
-                },
-                "login": {
-                  "page": "login",
-                  "path": "/login"
-                }
-              }
-            }
-          },
-          "components": [
-            {
-              "name": "@lnm/table",
-              "slot": "content",
-              "statics": {
-                "size": "small",
-                "staticColumn": true,
-                "staticField": true,
-                "showHeader": true,
-                "hasCreateBtn": true,
-                "title": "Realm Keys",
-                "pageStart": "0",
-                "columns": [
-                  {
-                    "title": "ID",
-                    "dataIndex": "id",
-                    "key": "id",
-                    "value": "id"
-                  },
-                  {
-                    "title": "RealmId",
-                    "dataIndex": "realmId",
-                    "key": "realmId",
-                    "value": "realmId"
-                  },
-                  {
-                    "title": "EntityId",
-                    "dataIndex": "entityId",
-                    "key": "entityId",
-                    "value": "entityId"
-                  },
-                  {
-                    "title": "Type",
-                    "dataIndex": "type",
-                    "key": "type",
-                    "value": "type"
-                  },
-                  {
-                    "title": "Status",
-                    "dataIndex": "status",
-                    "key": "status",
-                    "value": "status"
-                  },
-                  {
-                    "title": "删除",
-                    "dataIndex": "deletionAllow",
-                    "key": "deletionAllow",
-                    "value": "config.deletionAllow"
-                  },
-                  {
-                    "title": "备份",
-                    "dataIndex": "allowPlaintextBackup",
-                    "key": "allowPlaintextBackup",
-                    "value": "config.allowPlaintextBackup"
-                  },
-                  {
-                    "title": "导出",
-                    "dataIndex": "allowExportable",
-                    "key": "allowExportable",
-                    "value": "config.allowExportable"
-                  },
-                  {
-                    "title": "操作",
-                    "dataIndex": "cz",
-                    "key": "cz",
-                    "render": [
-                      "edit",
-                      "delete"
-                    ],
-                    "value": "id"
-                  }
-                ],
-                "fields": [
-                  {
-                    "name": "id",
-                    "label": "ID",
-                    "type": "string",
-                    "require": true
-                  },
-                  {
-                    "name": "description",
-                    "label": "Description",
-                    "type": "string",
-                    "require": true
-                  }
-                ]
+          "name": "@lnm/form",
+          "slot": "content",
+          "statics": {
+            "showHeader": true,
+            "hasUpdateBtn": true,
+            "hasBack": true,
+            "title": "Realm Key",
+            "btnText": "更新",
+            "fields": [
+              {
+                "name": "id",
+                "label": "ID",
+                "type": "string",
+                "disabled": true
               },
-              "metadata-dep": "cdb518ac-24b9-45c8-a026-7ede163f3849"
-            }
-          ]
+              {
+                "name": "entityId",
+                "label": "EntityId",
+                "type": "string",
+                "disabled": true
+              },
+              {
+                "name": "realmId",
+                "label": "RealmId",
+                "type": "string",
+                "disabled": true
+              },
+              {
+                "name": "type",
+                "label": "Type",
+                "type": "string",
+                "disabled": true
+              },
+              {
+                "name": "description",
+                "label": "Description",
+                "type": "textarea",
+                "require": true
+              },
+              {
+                "name": "allowExportable",
+                "label": "允许导出",
+                "type": "bool",
+                "require": true
+              },
+              {
+                "name": "deletionAllow",
+                "label": "允许删除",
+                "type": "bool",
+                "require": true
+              },
+              {
+                "name": "allowPlaintextBackup",
+                "label": "允许备份",
+                "type": "bool",
+                "require": true
+              }
+            ]
+          },
+          "metadata-dep": "cccd3310-6d0d-48b7-b31f-19af617e387d"
         }
       ]
-    };
+    },
+    {
+      "name": "entities-keys-detail",
+      "path": "/entities-keys-detail",
+      "layout": {
+        "name": "@lnm/nav-layout",
+        "statics": {
+          "logoSrc": "https://onepaas.oss-cn-beijing.aliyuncs.com/kms/logo-zs.png"
+        },
+        "links": {
+          "fields": [
+            {
+              "name": "entityType",
+              "type": "query",
+              "value": "entityType"
+            },
+            {
+              "name": "entityId",
+              "type": "query",
+              "value": "entityId"
+            },
+            {
+              "name": "realmId",
+              "type": "query",
+              "value": "realmId"
+            }
+          ],
+          "links": {
+            "root": {
+              "page": "realms",
+              "path": "/realms"
+            },
+            "realm": {
+              "page": "entities",
+              "path": "/entities?realmId={realmId}"
+            },
+            "entity": {
+              "page": "entities-keys",
+              "path": "/entities-keys?realmId={realmId}&entityId={entityId}&entityType={entityType}"
+            },
+            "login": {
+              "page": "login",
+              "path": "/login"
+            }
+          }
+        }
+      },
+      "components": [
+        {
+          "name": "@lnm/form",
+          "slot": "content",
+          "statics": {
+            "showHeader": true,
+            "hasUpdateBtn": true,
+            "btnText": "更新",
+            "title": "Entities Key",
+            "fields": [
+              {
+                "name": "id",
+                "label": "ID",
+                "type": "string",
+                "require": true
+              },
+              {
+                "name": "description",
+                "label": "Description",
+                "type": "textarea",
+                "require": true
+              },
+              {
+                "name": "realmId",
+                "label": "RealmId",
+                "type": "string",
+                "require": true
+              },
+              {
+                "name": "type",
+                "label": "Type",
+                "type": "string",
+                "require": true
+              },
+              {
+                "name": "deletionAllow",
+                "label": "允许删除",
+                "type": "bool"
+              },
+              {
+                "name": "allowPlaintextBackup",
+                "label": "允许备份",
+                "type": "bool"
+              },
+              {
+                "name": "allowExportable",
+                "label": "允许导出",
+                "type": "bool"
+              }
+            ],
+            "labelCol": 6,
+            "hasBack": false
+          },
+          "metadata-dep": "eb3e01f6-817b-488e-8cff-af3aeccf4c57"
+        }
+      ]
+    },
+    {
+      "name": "entities-keys",
+      "path": "/entities-keys",
+      "layout": {
+        "name": "@lnm/nav-layout",
+        "statics": {
+          "logoSrc": "https://onepaas.oss-cn-beijing.aliyuncs.com/kms/logo-zs.png"
+        },
+        "links": {
+          "fields": [
+            {
+              "name": "entityType",
+              "type": "query",
+              "value": "entityType"
+            },
+            {
+              "name": "entityId",
+              "type": "query",
+              "value": "entityId"
+            },
+            {
+              "name": "realmId",
+              "type": "query",
+              "value": "realmId"
+            }
+          ],
+          "links": {
+            "root": {
+              "page": "realms",
+              "path": "/realms"
+            },
+            "realm": {
+              "page": "entities",
+              "path": "/entities?realmId={realmId}"
+            },
+            "entity": {
+              "page": "entities-keys",
+              "path": "/entities-keys?realmId={realmId}&entityId={entityId}&entityType={entityType}"
+            },
+            "login": {
+              "page": "login",
+              "path": "/login"
+            }
+          }
+        }
+      },
+      "components": [
+        {
+          "name": "@lnm/table",
+          "slot": "content",
+          "statics": {
+            "showHeader": true,
+            "hasCreateBtn": true,
+            "title": "Entity Keys",
+            "pageStart": "0",
+            "size": "small",
+            "columns": [
+              {
+                "title": "ID",
+                "dataIndex": "id",
+                "key": "id",
+                "render": [
+                  "detail"
+                ],
+                "value": "id"
+              },
+              {
+                "title": "Description",
+                "dataIndex": "description",
+                "key": "description",
+                "value": "description"
+              },
+              {
+                "title": "Type",
+                "dataIndex": "type",
+                "key": "type",
+                "value": "type"
+              },
+              {
+                "title": "EntityId",
+                "dataIndex": "entityId",
+                "key": "entityId",
+                "value": "entityId"
+              },
+              {
+                "title": "RealmId",
+                "dataIndex": "realmId",
+                "key": "realmId",
+                "value": "realmId"
+              },
+              {
+                "title": "Status",
+                "dataIndex": "status",
+                "key": "status",
+                "value": "status"
+              },
+              {
+                "title": "导出",
+                "dataIndex": "allowExportable",
+                "key": "allowExportable",
+                "value": "config.allowExportable"
+              },
+              {
+                "title": "备份",
+                "dataIndex": "allowPlaintextBackup",
+                "key": "allowPlaintextBackup",
+                "value": "config.allowPlaintextBackup"
+              },
+              {
+                "title": "删除",
+                "dataIndex": "deletionAllow",
+                "key": "deletionAllow",
+                "value": "config.deletionAllow"
+              },
+              {
+                "title": "操作",
+                "dataIndex": "caozuo",
+                "key": "caozuo",
+                "render": [
+                  "edit",
+                  "delete"
+                ],
+                "value": "config.allowExportable"
+              }
+            ],
+            "staticColumn": true,
+            "staticField": true,
+            "fields": [
+              {
+                "name": "id",
+                "label": "ID",
+                "type": "string",
+                "require": true
+              },
+              {
+                "name": "type",
+                "label": "Type",
+                "type": "string",
+                "require": true
+              },
+              {
+                "name": "description",
+                "label": "Description",
+                "type": "string",
+                "require": false
+              }
+            ],
+            "hasBack": false,
+            "newFields": [
+              {
+                "name": "id",
+                "label": "ID",
+                "type": "string",
+                "require": true
+              },
+              {
+                "name": "type",
+                "label": "Type",
+                "type": "string",
+                "require": true
+              },
+              {
+                "name": "description",
+                "label": "Description",
+                "type": "textarea",
+                "require": true
+              }
+            ],
+            "editFields": [
+              {
+                "name": "type",
+                "label": "Type",
+                "type": "string",
+                "require": true
+              },
+              {
+                "name": "description",
+                "label": "Description",
+                "type": "textarea",
+                "require": false
+              },
+              {
+                "name": "deletionAllow",
+                "label": "允许删除",
+                "type": "bool",
+                "require": false
+              }
+            ]
+          },
+          "metadata-dep": "28b3170e-d3a4-4b4e-a0cd-1770866a71bc",
+          "links": {
+            "fields": [
+              {
+                "name": "entityKeyId",
+                "type": "arguments",
+                "value": "id"
+              },
+              {
+                "name": "realmId",
+                "type": "query",
+                "value": "realmId"
+              },
+              {
+                "name": "entityId",
+                "type": "query",
+                "value": "entityId"
+              },
+              {
+                "name": "entityType",
+                "type": "query",
+                "value": "entityType"
+              }
+            ],
+            "links": {
+              "detail": {
+                "page": "entities-keys-detail",
+                "path": "/entities-keys-detail?realmId={realmId}&entityType={entityType}&entityId={entityId}&entityKeyId={entityKeyId}"
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "realms-keys",
+      "path": "/realms-keys",
+      "layout": {
+        "name": "@lnm/nav-layout",
+        "statics": {
+          "menus": [
+            {
+              "key": "entities",
+              "label": "Entities",
+              "path": "/entities"
+            },
+            {
+              "key": "realms-keys",
+              "label": "Keys",
+              "path": "/realms-keys"
+            }
+          ],
+          "activeMenu": "realms-keys",
+          "logoSrc": "https://onepaas.oss-cn-beijing.aliyuncs.com/kms/logo-zs.png"
+        },
+        "links": {
+          "fields": [
+            {
+              "name": "entityType",
+              "type": "query",
+              "value": "entityType"
+            },
+            {
+              "name": "entityId",
+              "type": "query",
+              "value": "entityId"
+            },
+            {
+              "name": "realmId",
+              "type": "query",
+              "value": "realmId"
+            }
+          ],
+          "links": {
+            "page": {
+              "path": "realmId={realmId}"
+            },
+            "login": {
+              "page": "login",
+              "path": "/login"
+            },
+            "root": {
+              "page": "realms",
+              "path": "/realms"
+            },
+            "realm": {
+              "page": "entities",
+              "path": "/entities?realmId={realmId}"
+            },
+            "entity": {
+              "page": "entities-keys",
+              "path": "/entities-keys?realmId={realmId}&entityId={entityId}&entityType={entityType}"
+            }
+          }
+        }
+      },
+      "components": [
+        {
+          "name": "@lnm/table",
+          "slot": "content",
+          "statics": {
+            "size": "small",
+            "columns": [
+              {
+                "title": "ID",
+                "dataIndex": "id",
+                "key": "id",
+                "render": [
+                  "detail"
+                ],
+                "value": "id"
+              },
+              {
+                "title": "Type",
+                "dataIndex": "type",
+                "key": "type",
+                "value": "type"
+              },
+              {
+                "title": "RealmId",
+                "dataIndex": "realmId",
+                "key": "realmId",
+                "value": "realmId"
+              },
+              {
+                "title": "EntityId",
+                "dataIndex": "entityId",
+                "key": "entityId",
+                "value": "entityId"
+              },
+              {
+                "title": "Description",
+                "dataIndex": "description",
+                "key": "description",
+                "value": "description"
+              },
+              {
+                "title": "允许删除",
+                "dataIndex": "deletionAllow",
+                "key": "deletionAllow",
+                "value": "config.deletionAllow"
+              },
+              {
+                "title": "允许备份",
+                "dataIndex": "allowPlaintextBackup",
+                "key": "allowPlaintextBackup",
+                "value": "config.allowPlaintextBackup"
+              },
+              {
+                "title": "允许导出",
+                "dataIndex": "allowExportable",
+                "key": "allowExportable",
+                "value": "config.allowExportable"
+              },
+              {
+                "title": "Status",
+                "dataIndex": "status",
+                "key": "status",
+                "value": "status"
+              },
+              {
+                "title": "操作",
+                "dataIndex": "cz",
+                "key": "cz",
+                "render": [
+                  "delete"
+                ],
+                "value": "id"
+              }
+            ],
+            "staticColumn": true,
+            "staticField": true,
+            "showHeader": true,
+            "hasCreateBtn": true,
+            "title": "Realm Keys",
+            "pageStart": "0",
+            "fields": [
+              {
+                "name": "type",
+                "label": "Type",
+                "type": "string",
+                "require": true
+              },
+              {
+                "name": "description",
+                "label": "Description",
+                "type": "string",
+                "require": false
+              },
+              {
+                "name": "deletionAllow",
+                "label": "允许删除",
+                "type": "bool",
+                "require": true
+              },
+              {
+                "name": "allowPlaintextBackup",
+                "label": "允许备份",
+                "type": "bool",
+                "require": true
+              },
+              {
+                "name": "AllowExportable",
+                "label": "允许导出",
+                "type": "bool",
+                "require": true
+              }
+            ],
+            "newFields": [
+              {
+                "name": "type",
+                "label": "Type",
+                "type": "string",
+                "require": true
+              },
+              {
+                "name": "description",
+                "label": "Description",
+                "type": "textarea",
+                "require": true
+              },
+              {
+                "name": "deletionAllow",
+                "label": "允许删除",
+                "type": "bool"
+              },
+              {
+                "name": "allowPlaintextBackup",
+                "label": "允许备份",
+                "type": "bool"
+              },
+              {
+                "name": "AllowExportable",
+                "label": "允许导出",
+                "type": "bool"
+              }
+            ],
+            "editFields": [
+              {
+                "name": "id",
+                "label": "ID",
+                "type": "string",
+                "require": true,
+                "disabled": true
+              },
+              {
+                "name": "type",
+                "label": "Type",
+                "type": "string",
+                "require": true,
+                "disabled": true
+              },
+              {
+                "name": "description",
+                "label": "Description",
+                "type": "textarea",
+                "require": true,
+                "disabled": false
+              },
+              {
+                "name": "deletionAllow",
+                "label": "允许删除",
+                "type": "bool",
+                "require": false
+              },
+              {
+                "name": "allowPlaintextBackup",
+                "label": "允许备份",
+                "type": "bool",
+                "require": false
+              },
+              {
+                "name": "allowExportable",
+                "label": "允许导出",
+                "type": "bool",
+                "require": false,
+                "disabled": false
+              }
+            ]
+          },
+          "metadata-dep": "e7bf61cb-4222-4c9a-8a9f-acf7d3c99788",
+          "links": {
+            "fields": [
+              {
+                "name": "realmId",
+                "type": "query",
+                "value": "realmId"
+              },
+              {
+                "name": "realmKeyId",
+                "type": "arguments",
+                "value": "id"
+              }
+            ],
+            "links": {
+              "detail": {
+                "page": "realms-keys-detail",
+                "path": "/realms-keys-detail?realmId={realmId}&realmKeyId={realmKeyId}"
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "entities",
+      "path": "/entities",
+      "layout": {
+        "name": "@lnm/nav-layout",
+        "statics": {
+          "menus": [
+            {
+              "key": "entities",
+              "label": "Entities",
+              "path": "/entities"
+            },
+            {
+              "key": "realms-keys",
+              "label": "Keys",
+              "path": "/realms-keys"
+            }
+          ],
+          "activeMenu": "entities",
+          "logoSrc": "https://onepaas.oss-cn-beijing.aliyuncs.com/kms/logo-zs.png"
+        },
+        "links": {
+          "fields": [
+            {
+              "name": "entityType",
+              "type": "query",
+              "value": "entityType"
+            },
+            {
+              "name": "entityId",
+              "type": "query",
+              "value": "entityId"
+            },
+            {
+              "name": "realmId",
+              "type": "query",
+              "value": "realmId"
+            }
+          ],
+          "links": {
+            "page": {
+              "path": "realmId={realmId}"
+            },
+            "login": {
+              "page": "login",
+              "path": "/login"
+            },
+            "root": {
+              "page": "realms",
+              "path": "/realms"
+            },
+            "realm": {
+              "page": "entities",
+              "path": "/entities?realmId={realmId}"
+            },
+            "entity": {
+              "page": "entities-keys",
+              "path": "/entities-keys?realmId={realmId}&entityId={entityId}&entityType={entityType}"
+            }
+          }
+        }
+      },
+      "components": [
+        {
+          "name": "@lnm/table",
+          "slot": "content",
+          "statics": {
+            "size": "small",
+            "staticColumn": true,
+            "staticField": true,
+            "showHeader": true,
+            "hasCreateBtn": true,
+            "title": "Entities",
+            "pageStart": "0",
+            "columns": [
+              {
+                "title": "ID",
+                "dataIndex": "id",
+                "key": "id",
+                "render": [
+                  "detail"
+                ],
+                "value": "id"
+              },
+              {
+                "title": "Name",
+                "dataIndex": "name",
+                "key": "name",
+                "value": "name"
+              },
+              {
+                "title": "Type",
+                "dataIndex": "type",
+                "key": "type",
+                "value": "type"
+              },
+              {
+                "title": "Status",
+                "dataIndex": "status",
+                "key": "status",
+                "value": "status"
+              },
+              {
+                "title": "操作",
+                "dataIndex": "cz",
+                "key": "cz",
+                "render": [
+                  "edit",
+                  "delete"
+                ],
+                "value": "id"
+              }
+            ],
+            "fields": [
+              {
+                "name": "id",
+                "label": "ID",
+                "type": "string",
+                "require": true
+              },
+              {
+                "name": "name",
+                "label": "Name",
+                "type": "string",
+                "require": true
+              },
+              {
+                "name": "secret",
+                "label": "Secret",
+                "type": "string",
+                "require": true
+              },
+              {
+                "name": "type",
+                "label": "Type",
+                "type": "string",
+                "require": true
+              }
+            ],
+            "newFields": [
+              {
+                "name": "id",
+                "label": "ID",
+                "type": "string",
+                "require": true
+              },
+              {
+                "name": "name",
+                "label": "Name",
+                "type": "string",
+                "require": true
+              },
+              {
+                "name": "secret",
+                "label": "Secret",
+                "type": "string",
+                "require": true
+              },
+              {
+                "name": "type",
+                "label": "Type",
+                "type": "string",
+                "require": true
+              }
+            ],
+            "editFields": [
+              {
+                "name": "id",
+                "label": "ID",
+                "type": "string",
+                "require": true,
+                "disabled": true
+              },
+              {
+                "name": "type",
+                "label": "Type",
+                "type": "string",
+                "require": true,
+                "disabled": true
+              },
+              {
+                "name": "name",
+                "label": "Name",
+                "type": "string",
+                "require": true,
+                "disabled": false
+              }
+            ]
+          },
+          "metadata-dep": "b7c86a89-00f8-4a9c-a8ea-1b47efccf908",
+          "links": {
+            "fields": [
+              {
+                "name": "realmId",
+                "type": "query",
+                "value": "realmId"
+              },
+              {
+                "name": "entityId",
+                "type": "arguments",
+                "value": "id"
+              },
+              {
+                "name": "entityType",
+                "type": "arguments",
+                "value": "type"
+              }
+            ],
+            "links": {
+              "detail": {
+                "page": "entities-keys",
+                "path": "/entities-keys?realmId={realmId}&entityType={entityType}&entityId={entityId}"
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "login",
+      "path": "/login",
+      "layout": {
+        "name": "@lnm/login-layout",
+        "statics": {}
+      },
+      "components": [
+        {
+          "name": "@lnm/login",
+          "slot": "content",
+          "statics": {
+            "bannerSrc": "https://onepaas.oss-cn-beijing.aliyuncs.com/kms/login-bg.jpg"
+          },
+          "metadata-dep": "a3c5cfcf-b3be-486c-be3c-b06c9e0dfb4a",
+          "links": {
+            "fields": [
+              {
+                "name": "entityId",
+                "type": "arguments",
+                "value": "entityId"
+              },
+              {
+                "name": "realmId",
+                "type": "arguments",
+                "value": "realmId"
+              }
+            ],
+            "links": {
+              "root": {
+                "page": "realms",
+                "path": "/realms"
+              },
+              "realm": {
+                "page": "entities",
+                "path": "/entities?realmId={realmId}"
+              },
+              "entity": {
+                "page": "entities-keys",
+                "path": "/entities-keys?realmId={realmId}&entityId={entityId}"
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "realms",
+      "path": "/realms",
+      "layout": {
+        "name": "@lnm/nav-layout",
+        "statics": {
+          "logoSrc": "https://onepaas.oss-cn-beijing.aliyuncs.com/kms/logo-zs.png"
+        },
+        "links": {
+          "fields": [
+            {
+              "name": "entityType",
+              "type": "query",
+              "value": "entityType"
+            },
+            {
+              "name": "entityId",
+              "type": "query",
+              "value": "entityId"
+            },
+            {
+              "name": "realmId",
+              "type": "query",
+              "value": "realmId"
+            }
+          ],
+          "links": {
+            "root": {
+              "page": "realms",
+              "path": "/realms"
+            },
+            "realm": {
+              "page": "entities",
+              "path": "/entities?realmId={realmId}"
+            },
+            "entity": {
+              "page": "entities-keys",
+              "path": "/entities-keys?realmId={realmId}&entityId={entityId}&entityType={entityType}"
+            },
+            "login": {
+              "page": "login",
+              "path": "/login"
+            }
+          }
+        }
+      },
+      "components": [
+        {
+          "name": "@lnm/table",
+          "slot": "content",
+          "statics": {
+            "staticColumn": true,
+            "size": "small",
+            "columns": [
+              {
+                "title": "ID",
+                "dataIndex": "id",
+                "key": "id",
+                "render": [
+                  "detail"
+                ],
+                "value": "id"
+              },
+              {
+                "title": "Name",
+                "dataIndex": "name",
+                "key": "name",
+                "value": "name"
+              },
+              {
+                "title": "Status",
+                "dataIndex": "status",
+                "key": "status",
+                "value": "status"
+              },
+              {
+                "title": "操作",
+                "dataIndex": "cz",
+                "key": "cz",
+                "render": [
+                  "edit",
+                  "delete"
+                ],
+                "value": "id"
+              }
+            ],
+            "staticField": true,
+            "fields": [
+              {
+                "name": "id",
+                "label": "ID",
+                "type": "string",
+                "require": true
+              },
+              {
+                "name": "name",
+                "label": "Name",
+                "type": "string",
+                "require": true
+              },
+              {
+                "name": "secret",
+                "label": "Secret",
+                "type": "string",
+                "require": true
+              }
+            ],
+            "showHeader": true,
+            "hasCreateBtn": true,
+            "title": "Realms",
+            "pageStart": "0",
+            "newFields": [
+              {
+                "name": "id",
+                "label": "ID",
+                "type": "string",
+                "require": true
+              },
+              {
+                "name": "name",
+                "label": "Name",
+                "type": "string",
+                "require": true
+              },
+              {
+                "name": "secret",
+                "label": "Secret",
+                "type": "string",
+                "require": true
+              }
+            ],
+            "editFields": [
+              {
+                "name": "id",
+                "label": "ID",
+                "type": "string",
+                "require": true,
+                "disabled": true
+              },
+              {
+                "name": "name",
+                "label": "Name",
+                "type": "string",
+                "require": true,
+                "disabled": false
+              }
+            ]
+          },
+          "metadata-dep": "f8af1300-762f-4849-b462-82a39e96a468",
+          "links": {
+            "fields": [
+              {
+                "name": "realmId",
+                "type": "arguments",
+                "value": "id"
+              }
+            ],
+            "links": {
+              "detail": {
+                "page": "entities",
+                "path": "/entities?realmId={realmId}"
+              }
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
   </script>
-  <script src="http://oss.onelaas.com/react/react.development.js"></script>
-  <script src="http://oss.onelaas.com/react/react-dom.development.js"></script>
 </head>
 
 <body>

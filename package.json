@@ -1,6 +1,6 @@
 {
   "name": "@faass/assemble",
-  "version": "1.1.20",
+  "version": "1.2.5",
   "description": " ",
   "main": "lib/index.js",
   "scripts": {
@@ -42,6 +42,7 @@
     "js-yaml": "^3.14.0"
   },
   "dependencies": {
+    "@loadable/component": "^5.14.1",
     "history": "^4.10.1",
     "js-cookie": "^2.2.1",
     "jsonpath": "^1.0.2",

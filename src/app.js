@@ -28,7 +28,6 @@ export default class App extends React.Component {
   componentDidMount() {
     const makeRequest = async () => {
       // 加载组件
-      await this.core.loadExternals();
       store.components = await this.core.loadComponents();
       let res = await getResources(store.config.resources);
       this.setState({
